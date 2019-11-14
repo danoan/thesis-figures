@@ -1,0 +1,11 @@
+Shape: flower
+Grid Step: 0.25
+Radius: 5
+Iterations: 400
+Estimator: II
+Strategy: Best
+Min GC Length: 2
+Max GC Length: 50
+Jonctions: 1
+Length Penalization: 0.01
+Fixed Linels: 119 0 0 117 2 0 95 70 0 93 72 0 91 74 0 89 74 0 87 74 0 20 +39 0 120 +1 1 119 +2 1 118 1 1 118 +3 1 117 +4 1 96 69 1 96 67 1 94 71 1 92 73 1 19 +38 1 17 +38 1 15 +38 1 14 +39 1 13 +40 1 12 +41 1 
