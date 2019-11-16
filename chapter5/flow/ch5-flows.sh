@@ -18,10 +18,10 @@ function generate_plots()
     OUTPUT_PLOTS="${SCRIPT_PATH}/output/flow/plots/${energy}"
 
     scripts/summary-flow.sh $SUMMARY_APP $IMAGES_BASE_FOLDER
-    scripts/plot-scripts/shape-estimator.sh $IMAGES_BASE_FOLDER ${OUTPUT_PLOTS}/shape-estimator 1.00000 0.01000
-    scripts/plot-scripts/shape-grid.sh $IMAGES_BASE_FOLDER ${OUTPUT_PLOTS}/shape-grid ii 3 0.01000
-    scripts/plot-scripts/shape-grid.sh $IMAGES_BASE_FOLDER ${OUTPUT_PLOTS}/shape-grid ii 5 0.01000
-    scripts/plot-scripts/shape-grid.sh $IMAGES_BASE_FOLDER ${OUTPUT_PLOTS}/shape-grid mdca 3 0.01000
+    scripts/plot-scripts/shape-estimator.sh $IMAGES_BASE_FOLDER ${OUTPUT_PLOTS}/shape-estimator 1.00000 0.01000 $energy
+    scripts/plot-scripts/shape-grid.sh $IMAGES_BASE_FOLDER ${OUTPUT_PLOTS}/shape-grid ii 3 0.01000 $energy
+    scripts/plot-scripts/shape-grid.sh $IMAGES_BASE_FOLDER ${OUTPUT_PLOTS}/shape-grid ii 5 0.01000 $energy
+    scripts/plot-scripts/shape-grid.sh $IMAGES_BASE_FOLDER ${OUTPUT_PLOTS}/shape-grid mdca 3 0.01000 $energy
 
 }
 

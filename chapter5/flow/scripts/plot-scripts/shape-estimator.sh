@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
-source "graph-plot.sh"
+SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+source "${SCRIPT_PATH}/graph-plot.sh"
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 DATA_FOLDER=$( realpath $1 )
 OUTPUT_FOLDER=$2
 GS=$3
 LENGTH_PEN=$4
+ENERGY=$5
 
 mkdir -p $OUTPUT_FOLDER
 
@@ -19,8 +21,9 @@ prefix_input()
     estimator=$3
     length_pen=$4
     gs=$5
+    energy=$6
 
-    echo $DATA_FOLDER/$shape/radius_$radius/$estimator/elastica/len_pen_$length_pen/m2M50/jonctions_1/best/gs_$gs
+    echo $DATA_FOLDER/$shape/radius_$radius/$estimator/$energy/len_pen_$length_pen/m2M50/jonctions_1/best/gs_$gs
 }
 
 
@@ -31,5 +34,5 @@ do
     mkdir -p $OUTPUT_FILEFOLDER
 
     create_multiplot "$OUTPUT_FILEFOLDER/$s.eps" "$s" "$( prefix_input $s 3 mdca $LENGTH_PEN $GS )/energy.txt" "mdca" \
-    "$( prefix_input $s 3 ii $LENGTH_PEN $GS )/energy.txt" "ii-3" "$( prefix_input $s 5 ii $LENGTH_PEN $GS )/energy.txt" "ii-5"
+    "$( prefix_input $s 3 ii $LENGTH_PEN $GS $ENERGY )/energy.txt" "ii-3" "$( prefix_input $s 5 ii $LENGTH_PEN $GS )/energy.txt" "ii-5"
 done
