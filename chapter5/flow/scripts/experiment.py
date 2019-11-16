@@ -26,17 +26,17 @@ def combinations(configList):
 
 
 GRID_STEP=[1,0.5,0.25]
-SHAPES=["square","triangle","flower"]#"wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
+SHAPES=["bean","square","flower","triangle"]
 RADIUS=[3,5]
 ESTIMATOR=["mdca","ii"]
-ENERGY=["sqc"]
-LENGTH_PENALIZATION=[0.01]
+ENERGY=["elastica","sqc"]
+LENGTH_PENALIZATION=[0.0001,0.001,0.005,0.01]
 ITERATIONS=[400]
 MIN_CURVE_LENGTH=[2]
 MAX_CURVE_LENGTH=[50]
 NUM_JONCTIONS=[1]
 STRATEGY=["best"]
-NUM_THREADS=[16]
+NUM_THREADS=[32]
 
 
 CONFIG_LIST=[ (GRID_STEP,"grid_step"),
