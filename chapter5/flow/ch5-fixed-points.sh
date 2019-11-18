@@ -19,10 +19,10 @@ function run_flow()
     OUTPUT_PLOTS=${OUTPUT_FLOW}/plots
 
     $EXHAUSTIVE_APP -S${INPUT_BASE_PATH}/flower-1/input.pgm -h0.25 -r5 -i400 -tii -sbest -m2 -M50 -j1 -a0.01 -n32 -e$energy -F${INPUT_BASE_PATH}/flower-1/pixelMask.pgm ${OUTPUT_FLOW}/flower-1
-    $SUMMARY_APP -j2 -p${OUTPUT_FLOW}/flower-1/pixelMask.pgm ${OUTPUT_FLOW}/flower-1 ${OUTPUT_FLOW}/flower-1/summary.eps
+    $SUMMARY_APP -j2 -d${OUTPUT_FLOW}/flower-1/pixelMask.pgm ${OUTPUT_FLOW}/flower-1 ${OUTPUT_FLOW}/flower-1/summary.eps
 
     $EXHAUSTIVE_APP -S${INPUT_BASE_PATH}/flower-2/input.pgm -h0.25 -r5 -i400 -tii -sbest -m2 -M50 -j1 -a0.01 -n32 -e$energy -F${INPUT_BASE_PATH}/flower-2/pixelMask.pgm ${OUTPUT_FLOW}/flower-2
-    $SUMMARY_APP -j2 -p${OUTPUT_FLOW}/flower-2/pixelMask.pgm ${OUTPUT_FLOW}/flower-2 ${OUTPUT_FLOW}/flower-1/summary.eps
+    $SUMMARY_APP -j2 -d${OUTPUT_FLOW}/flower-2/pixelMask.pgm ${OUTPUT_FLOW}/flower-2 ${OUTPUT_FLOW}/flower-2/summary.eps
 }
 
 
