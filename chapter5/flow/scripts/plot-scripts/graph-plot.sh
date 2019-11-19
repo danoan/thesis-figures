@@ -19,7 +19,7 @@ gp_plot_config()
 
 
 gp_add_plot()
-{   
+{
 	printf "'$1' u 1:2 w l lw 5 title '$2',"
 
 }
@@ -41,15 +41,15 @@ create_multiplot()
 	fileoutput=$1;shift;
 	plottitle=$1;shift;
 
-	buffer="$(gp_plot_config $mode $plottitle)plot "
+	buffer="$(gp_plot_config $mode "$plottitle")plot "
 	i=0
 	num_plots=`expr ${#} / 2 - 1`
 
 	while [ ${i} -lt ${num_plots} ]
 	do
 		subplotDataFile=$1
-		subplotTitle=$2
-		buffer="${buffer}$(gp_add_plot $mode $subplotDataFile $subplotTitle)"
+		subplotTitle="$2"
+		buffer="${buffer}$(gp_add_plot $mode $subplotDataFile "$subplotTitle")"
 		shift; shift;
 
 		i=`expr $i + 1`
@@ -57,9 +57,9 @@ create_multiplot()
 	
 	if [ $num_plots -eq 0 ]
 	then
-		buffer="${buffer}$(gp_last_plot $mode $1 $2)"
+		buffer="${buffer}$(gp_last_plot $mode $1 "$2")"
 	else	
-		buffer="${buffer}$(gp_last_plot $mode $1 $2)"
+		buffer="${buffer}$(gp_last_plot $mode $1 "$2")"
 	fi
 
 	buffer="${buffer}$(gp_optimal_line)$(gp_save)"
