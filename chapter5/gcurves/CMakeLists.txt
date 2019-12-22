@@ -16,6 +16,13 @@ target_include_directories(ch5-gcurves PRIVATE
         ${SCABOLIC_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS})
 
+target_link_directories(ch5-gcurves PRIVATE
+        ${DIPACUS_LIBS_DIR}
+        ${SCABOLIC_LIBS_DIR}
+        ${BTOOLS_LIBS_DIR}
+        ${EXHAUSTIVE_GC_LIBS_DIR}
+        ${BOOST_LIBS_DIR})
+
 target_link_libraries(ch5-gcurves
         -lbtools-core
         -lbtools-reader
@@ -26,9 +33,9 @@ target_link_libraries(ch5-gcurves
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base
-        -lexhaustive-gc-api
-        -lexhaustive-gc-energy
         -lexhaustive-gc-core
+        -lexhaustive-gc-energy
+        -lexhaustive-gc-api
         -lgcurve
         -lgcurve-utils
         -lboost_filesystem
