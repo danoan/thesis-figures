@@ -32,3 +32,4 @@ find_package(OpenCV REQUIRED)
 
 add_subdirectory(ext-projects)
 add_subdirectory(chapter5)
+add_subdirectory(chapter6)
