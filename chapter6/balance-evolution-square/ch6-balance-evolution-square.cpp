@@ -94,7 +94,7 @@ int main(int argc,char* argv[])
     Point lp,up;
     shape.computeBoundingBox(lp,up);
 
-    Arange arange(0,5/h,100);
+    Arange arange(0,radius/h,100);
     RealPoint center = up;
     double d;
     while(arange(d))
