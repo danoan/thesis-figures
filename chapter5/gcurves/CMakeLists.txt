@@ -1,6 +1,13 @@
-add_executable(ch5-gcurves ch5-gcurves.cpp)
+cmake_minimum_required(VERSION 3.2)
+project(ch5-gcurves)
 
-add_dependencies(ch5-gcurves scabolic dipacus exhaustive-gc gcurve)
+add_executable(ch5-gcurves ch5-gcurves.cpp
+        src/distance-transform.cpp
+        src/glued-curve.cpp)
+
+if(${USE_REMOTE_REPOSITORIES})
+    add_dependencies(ch5-gcurves btools scabolic dipacus exhaustive-gc gcurve)
+endif()
 
 target_include_directories(ch5-gcurves PRIVATE
         include
@@ -9,14 +16,10 @@ target_include_directories(ch5-gcurves PRIVATE
         ${SCABOLIC_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS})
 
-target_link_directories(ch5-gcurves PRIVATE
-        ${BOOST_LIBS_DIR}
-        ${DIPACUS_LIBS_DIR}
-        ${SCABOLIC_LIBS_DIR}
-        ${EXHAUSTIVE_GC_LIBS_DIR}
-        ${GCURVE_LIBS_DIR})
-
 target_link_libraries(ch5-gcurves
+        -lbtools-core
+        -lbtools-reader
+        -lbtools-utils
         -lscabolic-optimization
         -lscabolic-energy
         -lscabolic-core
@@ -24,8 +27,8 @@ target_link_libraries(ch5-gcurves
         -ldipacus-components
         -ldipacus-base
         -lexhaustive-gc-api
-        -lexhaustive-gc-core
         -lexhaustive-gc-energy
+        -lexhaustive-gc-core
         -lgcurve
         -lgcurve-utils
         -lboost_filesystem

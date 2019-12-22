@@ -3,7 +3,8 @@
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 PROJECT_PATH=$( cd $SCRIPT_PATH && cd ../../ && pwd )
 
-source "${SCRIPT_PATH}/scripts/plot-scripts/graph-plot.sh"
+source "${PROJECT_PATH}/plot-scripts/graph-plot.sh"
+
 
 APP_IMAGE_ESTIMATOR=${PROJECT_PATH}/ext-projects/cmake-build-release/bin/app-image-estimator
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-source "${SCRIPT_PATH}/graph-plot.sh"
+ROOT_FOLDER=$(cd $SCRIPT_PATH && cd ../../../../ && pwd)
+source "${ROOT_FOLDER}/plot-scripts/graph-plot.sh"
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 DATA_FOLDER=$( realpath $1 )

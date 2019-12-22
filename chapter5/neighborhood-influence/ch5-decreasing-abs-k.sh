@@ -32,8 +32,7 @@ INPUT_BASE_PATH=${SCRIPT_PATH}/input
 
 $EXHAUSTIVE_APP -m2 -M50 -S${INPUT_BASE_PATH}/r20r5.pgm -r5 -tii -esqc -a0.01 -i400 -j1 -sbest -n32 $(output_base_folder r20r5)
 $EXHAUSTIVE_APP -m2 -M50 -S${INPUT_BASE_PATH}/r20r7.pgm -r5 -tii -esqc -a0.01 -i400 -j1 -sbest -n32 $(output_base_folder r20r7)
-
-$EXHAUSTIVE_APP -m2 -M50 -S${INPUT_BASE_PATH}/r20r5.pgm -r9 -tii -esqc -a0.01 -i400 -j1 -sbest -n32 $(output_base_folder r20r5R9)
+$EXHAUSTIVE_APP -m2 -M50 -S${INPUT_BASE_PATH}/r20r9.pgm -r5 -tii -esqc -a0.01 -i400 -j1 -sbest -n32 $(output_base_folder r20r5R9)
 
 
 generate_plots sqc
