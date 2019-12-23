@@ -11,6 +11,7 @@ gp_plot_config()
 	set yrange[0:];
 	set xlabel 'Distance';
 	set ylabel 'Balance coefficient';"
+	#set logscale y 10;
 }
 
 DATA_FOLDER=$(realpath $1)
