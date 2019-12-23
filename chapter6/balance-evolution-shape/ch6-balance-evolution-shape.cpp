@@ -174,7 +174,7 @@ CurveData findKPoint(const DigitalSet& shape, double h, double k1, double k2)
         ++i;
     }
 
-    throw std::runtime_error("kpoint not found!");
+    exit(2);
 }
 
 int main(int argc,char* argv[])
@@ -217,13 +217,13 @@ int main(int argc,char* argv[])
            << fixedStrLength(COL_LENGTH,"uOut")
             << fixedStrLength(COL_LENGTH,"k=" + std::to_string(cd.k)) << "\n";
 
-    DGtal::Board2D board;
-    board.clear();
-    board << DGtal::SetMode(shape.className(),"Paving");
-    board << shape;
-    board << DGtal::CustomStyle(center.className() + "/Paving", new DGtal::CustomColors(DGtal::Color::Red, DGtal::Color::Red));
-    board << center;
-    board.saveSVG("alo.svg");
+//    DGtal::Board2D board;
+//    board.clear();
+//    board << DGtal::SetMode(shape.className(),"Paving");
+//    board << shape;
+//    board << DGtal::CustomStyle(center.className() + "/Paving", new DGtal::CustomColors(DGtal::Color::Red, DGtal::Color::Red));
+//    board << center;
+//    board.saveSVG("alo.svg");
 
     double d;
     while(arange(d))

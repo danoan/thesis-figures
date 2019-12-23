@@ -32,9 +32,7 @@ gp_save()
             set terminal postscript portrait enhanced color lw 2 \"Helvetica\" 20;
             set key right center;
             set output \"my-plot.ps\";
-            replot;
-            set terminal x11;
-            set size 1,1;"
+            replot;"
 }
 
 gp_add_plot()

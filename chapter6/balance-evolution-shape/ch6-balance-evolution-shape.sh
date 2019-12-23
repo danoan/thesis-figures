@@ -1,19 +1,37 @@
 #!/usr/bin/env bash
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-ROOT_FOLDER=$( cd $SCRIPT_PATH && cd ../../ && pwd )
+CREATE_PLOTS_SCRIPT=${SCRIPT_PATH}/create-plots.sh
+OUTPUT_FOLDER=${SCRIPT_PATH}/output
 
-DATA_BIN=${ROOT_FOLDER}/cmake-build-debug/chapter6/balance-evolution-shape/ch6-balance-evolution-shape
-OUTPUT_DATA_FOLDER=${SCRIPT_PATH}/output/bean
-RADIUS=5
+shapes="square flower triangle bean"
+radii="0.5 1 3 5 7"
+kp="0 0.01   0.01  0.1  0.1 0.2   0.2 0.3    0.3 0.4   0.4 0.5"
+km="-0.01 0   -0.1 -0.01   -0.2 -0.1  -0.3 -0.2  -0.4 -0.3  -0.5 -0.4"
 
-PLOT_SCRIPT=${SCRIPT_PATH}/plot-graph.sh
-OUTPUT_PLOT_FOLDER=${SCRIPT_PATH}/output-plot/bean-k-015
+create_plots_sequence()
+{
+    shape=$1; shift;
+    radius=$1; shift;
+    output_folder=$1; shift;
+    k1=$1; shift;
+    k2=$1; shift;
 
-h_list="1 0.5 0.25 0.125"
+    while [ -n "$k1" ]
+    do
+        $CREATE_PLOTS_SCRIPT $radius $k1 $k2 $shape ${output_folder}
+        k1=$1; shift;
+        k2=$1; shift;
+    done
+}
 
-for h in $h_list
+for s in $shapes
 do
-    $DATA_BIN bean $h $RADIUS -0.15 -0.1 ${OUTPUT_DATA_FOLDER}/h$h
-    $PLOT_SCRIPT ${OUTPUT_DATA_FOLDER}/h$h ${OUTPUT_PLOT_FOLDER}/h${h}.eps
+    for r in $radii
+    do
+        create_plots_sequence $s $r "${OUTPUT_FOLDER}/k+" $kp
+        create_plots_sequence $s $r "${OUTPUT_FOLDER}/k-" $km
+    done
 done
+
+
