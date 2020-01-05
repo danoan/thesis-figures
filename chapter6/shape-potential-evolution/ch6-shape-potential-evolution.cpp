@@ -1,6 +1,7 @@
 #include <boost/filesystem.hpp>
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/io/boards/Board2D.h>
+#include <DGtal/io/writers/GenericWriter.h>
 
 #include <DIPaCUS/base/Shapes.h>
 #include <DIPaCUS/components/SetOperations.h>
@@ -92,7 +93,7 @@ uint intersectionCount(const DigitalSet& A, const DigitalSet& B)
 
 double balanceCoefficient(const DigitalSet& shape, const RealPoint& ballCenter, double ballRadius, double h)
 {
-    DigitalSet ball = DIPaCUS::Shapes::ball(1,ballCenter[0],ballCenter[1],ballRadius);
+    DigitalSet ball = DIPaCUS::Shapes::ball(h,ballCenter[0]*h,ballCenter[1]*h,ballRadius);
     double cInt = pow(h,2)*intersectionCount(ball,shape);
     double halfBallArea = pow(h,2)*ball.size()/2.0;
 
@@ -116,6 +117,80 @@ std::string fixedStrLength(int l,std::string str)
     return out;
 }
 
+struct PotentialData
+{
+    typedef GEOC::API::GridCurve::Curvature::EstimationsVector CurvatureVector;
+    typedef GEOC::API::GridCurve::Tangent::EstimationsVector TangentVector;
+    typedef GEOC::API::GridCurve::Length::EstimationsVector LengthVector;
+
+    PotentialData(const DigitalSet& shape, double h)
+    {
+        using namespace GEOC::API::GridCurve;
+
+        const Domain& domain = shape.domain();
+        kspace.init(domain.lowerBound(),domain.upperBound(),true);
+
+        DIPaCUS::Misc::computeBoundaryCurve(curve,shape);
+
+        GEOC::Estimator::Standard::IICurvatureExtraData data(true,5);
+        Curvature::identityOpen<Curvature::EstimationAlgorithms::ALG_II>(kspace,curve.begin(),curve.end(),kv,h,&data);
+
+        Tangent::symmetricClosed<Tangent::EstimationAlgorithms::ALG_MDSS>(kspace,curve.begin(),curve.end(),tv,h,NULL);
+
+        LengthVector lv;
+        Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED>(kspace,curve.begin(),curve.end(),lv,h,NULL);
+        length=0;
+        for(auto el:lv)length+=el;
+    }
+
+    KSpace kspace;
+    Curve curve;
+    CurvatureVector kv;
+    TangentVector tv;
+    double length;
+};
+
+struct Potential
+{
+    std::vector<double> outBalances;
+    std::vector<double> innBalances;
+    std::vector<double> diffBalances;
+};
+
+Potential computePotential(const DigitalSet& shape,double h,double radius, double level)
+{
+    PotentialData pd(shape,h);
+    Potential potential;
+
+    int i=0;
+    for(auto kp:pd.curve)
+    {
+        RealPoint center = pd.kspace.sCoords(kp);
+        auto tangent = pd.tv[i];
+        RealPoint dir( -tangent[1],tangent[0] );
+        double norm=pow( pow(dir[0],2)+pow(dir[1],2),0.5 );
+        dir/=norm;
+
+        RealPoint pOut = -level*dir;
+        RealPoint pInn = level*dir;
+
+        RealPoint centerOut = center + pOut;
+        RealPoint centerInn = center + pInn;
+
+        double uOut = balanceCoefficient(shape,centerOut,radius,h);
+        double uInn = balanceCoefficient(shape,centerInn,radius,h);
+
+        potential.outBalances.push_back(uOut);
+        potential.innBalances.push_back(uInn);
+
+        potential.diffBalances.push_back( fabs(uOut-uInn)/pd.length );
+
+        ++i;
+    }
+
+    return potential;
+}
+
 int main(int argc,char* argv[])
 {
     int COL_LENGTH=20;
@@ -133,17 +208,15 @@ int main(int argc,char* argv[])
     std::string outputFolder = argv[5];
 
     boost::filesystem::create_directories(outputFolder);
-    std::ofstream ofsInn(outputFolder+"/inner.txt");
-    std::ofstream ofsOut(outputFolder+"/outer.txt");
+    std::ofstream ofsDiff(outputFolder+"/diff.txt");
 
     DigitalSet _shape = resolveShape(shapeName,h);
-    DigitalSet shape = DIPaCUS::Transform::bottomLeftBoundingBoxAtOrigin(_shape,Point(40,40));
+    DigitalSet shape = DIPaCUS::Transform::bottomLeftBoundingBoxAtOrigin(_shape,Point(100,100));
 
-    ofsInn << fixedStrLength(COL_LENGTH,"#Iteration")
-           << fixedStrLength(COL_LENGTH,"Inner Potential") << "\n";
 
-    ofsOut << fixedStrLength(COL_LENGTH,"#Iteration")
-           << fixedStrLength(COL_LENGTH,"Outer Potential") << "\n";
+    ofsDiff << fixedStrLength(COL_LENGTH,"#Iteration")
+           << fixedStrLength(COL_LENGTH,"Diff Potential") << "\n";
+
 
     SCaBOliC::Input::Data inputFlow;
     inputFlow.radius = radius/h;
@@ -166,48 +239,31 @@ int main(int argc,char* argv[])
                                             inputFlow.optBand);
 
         SCaBOliC::Core::ODRModel ODR = odrPixels.createODR(SCaBOliC::Core::ODRModel::ApplicationMode::AM_AroundBoundary,
-                                                            shape,
-                                                            false);
-        double uOut = 0;
-        for(auto p:ODR.applicationRegionOut)
-        {
-            uOut += balanceCoefficient(shape,p,inputFlow.radius,inputFlow.gridStep);
-        }
+                                                           shape,
+                                                           false);
 
-        double uInn = 0;
-        for(auto p:ODR.applicationRegionInn)
-        {
-            uInn += balanceCoefficient(shape,p,inputFlow.radius,inputFlow.gridStep);
-        }
+        auto potential = computePotential(shape,h,radius,inputFlow.levels);
 
-        uOut*=ODR.outerCoeff;
-        uInn*=ODR.innerCoeff;
+        double diffPotential=0;
+        for(auto diff:potential.diffBalances) diffPotential+=diff;
 
-        ofsInn << fixedStrLength(COL_LENGTH,it)
-               << fixedStrLength(COL_LENGTH,uInn) << "\n";
+        ofsDiff << fixedStrLength(COL_LENGTH,it)
+                << fixedStrLength(COL_LENGTH,diffPotential) << "\n";
 
-        ofsOut << fixedStrLength(COL_LENGTH,it)
-               << fixedStrLength(COL_LENGTH,uOut) << "\n";
 
         cv::Mat imgOut = cv::Mat::zeros(size[1],size[0],CV_8UC1);;
         DIPaCUS::Representation::digitalSetToCVMat(imgOut,shape);
         cv::imwrite(outputFolder + "/" + std::to_string(it) +  ".png",imgOut);
 
         ++it;
-        try
-        {
-            shape = SCaBOliC::Flow::flow(shape,inputFlow,shape.domain());
-        }catch(std::exception ex)
-        {
-            break;
-        }
+        shape = SCaBOliC::Flow::flow(shape,inputFlow,shape.domain());
+
 
         if(shape.size()==0) break;
 
     }
 
-    ofsInn.flush(); ofsOut.flush();
-    ofsInn.close(); ofsOut.close();
+    ofsDiff.flush(); ofsDiff.flush();
 
     return 0;
 }

@@ -5,7 +5,7 @@ add_executable(ch6-shape-potential-evolution ch6-shape-potential-evolution.cpp
         src/Flow.cpp)
 
 if(${USE_REMOTE_REPOSITORIES})
-    add_dependencies(ch6-shape-potential-evolution dipacus)
+    add_dependencies(ch6-shape-potential-evolution dipacus scabolic)
 endif()
 
 target_include_directories(ch6-shape-potential-evolution PRIVATE

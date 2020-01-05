@@ -2,19 +2,39 @@
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 ROOT_FOLDER=$( cd $SCRIPT_PATH && cd ../../ && pwd )
-PLOT_SCRIPT_FOLDER=${ROOT_FOLDER}/chapter6/plot-scripts
 
-SHAPE=square
-H=0.25
-RADIUS=3
-IT=50
+source "${ROOT_FOLDER}/plot-scripts/graph-plot.sh"
 
-OUTPUT_DATA_FOLDER=${1}/data/$SHAPE
-OUTPUT_PLOT_FOLDER=${1}/plot/$SHAPE
+gp_plot_config()
+{
+	printf "set title '$1';
+	set yrange[0:];
+	set xlabel 'Iteration';
+	set ylabel 'Difference of potential';"
+	#set logscale y 10;
+}
 
+IT=200
+#IT=10
 
-DATA_BIN=${ROOT_FOLDER}/cmake-build-debug/chapter6/shape-potential-evolution/ch6-shape-potential-evolution
-$DATA_BIN $SHAPE $H $RADIUS $IT ${OUTPUT_DATA_FOLDER}
+RADIUS=$1
+SHAPE=$2
+OUTPUT_FOLDER=$3
 
-PLOT_SCRIPT=${PLOT_SCRIPT_FOLDER}/plot-graph.sh
-$PLOT_SCRIPT ${OUTPUT_DATA_FOLDER} ${OUTPUT_PLOT_FOLDER}/plot.eps
+h_list="0.25 0.125 0.0625"
+
+for h in $h_list
+do
+    echo "Generating output for shape=$SHAPE; radius=$RADIUS; h=$h;"
+
+    OUTPUT_DATA_FOLDER=${OUTPUT_FOLDER}/data/$h/$SHAPE
+    OUTPUT_PLOT_FOLDER=${OUTPUT_FOLDER}/plot/$h
+
+    mkdir -p $OUTPUT_PLOT_FOLDER
+
+    DATA_BIN=${ROOT_FOLDER}/cmake-build-debug/chapter6/shape-potential-evolution/ch6-shape-potential-evolution
+    $DATA_BIN $SHAPE $h $RADIUS $IT ${OUTPUT_DATA_FOLDER}
+
+    create_multiplot ${OUTPUT_PLOT_FOLDER}/${SHAPE}.eps "$SHAPE" \
+    "${OUTPUT_DATA_FOLDER}/diff.txt" "$SHAPE"
+done
