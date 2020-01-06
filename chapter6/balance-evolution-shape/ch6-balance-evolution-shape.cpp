@@ -4,6 +4,7 @@
 
 #include <DIPaCUS/base/Shapes.h>
 #include <DIPaCUS/components/SetOperations.h>
+#include <DIPaCUS/components/Transform.h>
 
 #include <geoc/api/gridCurve/Curvature.hpp>
 #include <geoc/api/gridCurve/Tangent.hpp>
@@ -177,6 +178,20 @@ CurveData findKPoint(const DigitalSet& shape, double h, double k1, double k2)
     exit(2);
 }
 
+void exportBallCenter(const DigitalSet& shape,const RealPoint& center, const std::string& outputFilepath)
+{
+    Point size = shape.domain().upperBound() - shape.domain().lowerBound() + Point(1,1);
+    cv::Mat grayImg = cv::Mat::zeros(size[1],size[0],CV_8UC1);
+    cv::Mat colorImg = cv::Mat::zeros(size[1],size[0],CV_8UC4);
+    DIPaCUS::Representation::digitalSetToCVMat(grayImg,shape);
+    cv::cvtColor(grayImg,colorImg,cv::COLOR_GRAY2BGRA);
+    Point imgCenter;
+    imgCenter[0] = size[1] - center[1] - 1;
+    imgCenter[1] = center[0];
+    colorImg.at<cv::Vec4b>(imgCenter[0],imgCenter[1])=cv::Vec4b(0,255,0,255);
+    cv::imwrite(outputFilepath,colorImg);
+}
+
 int main(int argc,char* argv[])
 {
     int COL_LENGTH=20;
@@ -198,7 +213,8 @@ int main(int argc,char* argv[])
     std::ofstream ofsInn(outputFolder+"/inner.txt");
     std::ofstream ofsOut(outputFolder+"/outer.txt");
 
-    DigitalSet shape = resolveShape(shapeName,h);
+    DigitalSet _shape = resolveShape(shapeName,h);
+    DigitalSet shape = DIPaCUS::Transform::bottomLeftBoundingBoxAtOrigin(_shape);
     CurveData cd = findKPoint(shape,h,k1,k2);
 
 
@@ -217,13 +233,8 @@ int main(int argc,char* argv[])
            << fixedStrLength(COL_LENGTH,"uOut")
             << fixedStrLength(COL_LENGTH,"k=" + std::to_string(cd.k)) << "\n";
 
-//    DGtal::Board2D board;
-//    board.clear();
-//    board << DGtal::SetMode(shape.className(),"Paving");
-//    board << shape;
-//    board << DGtal::CustomStyle(center.className() + "/Paving", new DGtal::CustomColors(DGtal::Color::Red, DGtal::Color::Red));
-//    board << center;
-//    board.saveSVG("alo.svg");
+
+    exportBallCenter(shape,center,outputFolder+"/ball-center.png");
 
     double d;
     while(arange(d))
