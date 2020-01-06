@@ -5,7 +5,7 @@ add_executable(ch6-shape-potential-evolution ch6-shape-potential-evolution.cpp
         src/Flow.cpp)
 
 if(${USE_REMOTE_REPOSITORIES})
-    add_dependencies(ch6-shape-potential-evolution dipacus scabolic)
+    add_dependencies(ch6-shape-potential-evolution dipacus scabolic geoc)
 endif()
 
 target_include_directories(ch6-shape-potential-evolution PRIVATE
@@ -18,25 +18,15 @@ target_include_directories(ch6-shape-potential-evolution PRIVATE
 target_link_directories(ch6-shape-potential-evolution PRIVATE
         ${DIPACUS_LIBS_DIR}
         ${SCABOLIC_LIBS_DIR}
-        ${BTOOLS_LIBS_DIR}
-        ${EXHAUSTIVE_GC_LIBS_DIR}
         ${BOOST_LIBS_DIR})
 
 target_link_libraries(ch6-shape-potential-evolution
-        -lbtools-core
-        -lbtools-reader
-        -lbtools-utils
         -lscabolic-optimization
         -lscabolic-energy
         -lscabolic-core
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base
-        -lexhaustive-gc-core
-        -lexhaustive-gc-energy
-        -lexhaustive-gc-api
-        -lgcurve
-        -lgcurve-utils
         -lboost_filesystem
         -lboost_system
         ${DGTAL_LIBRARIES}

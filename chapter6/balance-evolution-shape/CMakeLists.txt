@@ -4,7 +4,7 @@ project(ch6-balance-evolution-shape)
 add_executable(ch6-balance-evolution-shape ch6-balance-evolution-shape.cpp)
 
 if(${USE_REMOTE_REPOSITORIES})
-    add_dependencies(ch6-balance-evolution-shape dipacus)
+    add_dependencies(ch6-balance-evolution-shape dipacus geoc)
 endif()
 
 target_include_directories(ch6-balance-evolution-shape PRIVATE
@@ -16,26 +16,12 @@ target_include_directories(ch6-balance-evolution-shape PRIVATE
 
 target_link_directories(ch6-balance-evolution-shape PRIVATE
         ${DIPACUS_LIBS_DIR}
-        ${SCABOLIC_LIBS_DIR}
-        ${BTOOLS_LIBS_DIR}
-        ${EXHAUSTIVE_GC_LIBS_DIR}
         ${BOOST_LIBS_DIR})
 
 target_link_libraries(ch6-balance-evolution-shape
-        -lbtools-core
-        -lbtools-reader
-        -lbtools-utils
-        -lscabolic-optimization
-        -lscabolic-energy
-        -lscabolic-core
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base
-        -lexhaustive-gc-core
-        -lexhaustive-gc-energy
-        -lexhaustive-gc-api
-        -lgcurve
-        -lgcurve-utils
         -lboost_filesystem
         -lboost_system
         ${DGTAL_LIBRARIES}
