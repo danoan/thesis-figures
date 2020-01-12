@@ -2,6 +2,18 @@
 
 namespace Energy
 {
+    IndexPair makePair(Index i1, Index i2)
+    {
+        Index temp = i1;
+        if (i2 < i1)
+        {
+            i1 = i2;
+            i2 = temp;
+        }
+
+        return IndexPair(i1,i2);
+    }
+
     void solve(Solution& solution, UnaryTermsMatrix& UTM, EnergyTable& ET )
     {
         MySolver (solution.energyValue,
@@ -13,15 +25,6 @@ namespace Energy
                   10);
     }
 
-    BooleanConfigurations& BooleanConfigurations::operator+(const BooleanConfigurations& other)
-    {
-        this->e00 += other.e00;
-        this->e01 += other.e01;
-        this->e10 += other.e10;
-        this->e11 += other.e11;
-
-        return *this;
-    }
 
     Term::Term(const ODRModel& ODR):vm(ODR)
     {

@@ -9,23 +9,18 @@ namespace Energy
     typedef SCaBOliC::Energy::OptimizationData::PairwiseTermsMatrix PairwiseTermsMatrix;
     typedef SCaBOliC::Energy::OptimizationData::EnergyTable EnergyTable;
 
+    typedef SCaBOliC::Energy::OptimizationData::BooleanConfigurations BooleanConfigurations;
+
     typedef SCaBOliC::Energy::Solution Solution;
     typedef Solution::LabelsVector LabelsVector;
 
+    typedef SCaBOliC::Energy::OptimizationData::Index Index;
+    typedef SCaBOliC::Energy::OptimizationData::IndexPair IndexPair;
+
     typedef SCaBOliC::Optimization::QPBOImproveSolver<UnaryTermsMatrix,EnergyTable,LabelsVector> MySolver;
 
+    IndexPair makePair(Index i1, Index i2);
     void solve(Solution& solution, UnaryTermsMatrix& UTM, EnergyTable& ET );
-
-    struct BooleanConfigurations
-    {
-        BooleanConfigurations(){}
-        BooleanConfigurations(double e00, double e01, double e10, double e11):e00(e00),
-                                                                              e01(e01),e10(e10),e11(e11){}
-
-        BooleanConfigurations& operator+(const BooleanConfigurations& other);
-
-        double e00,e01,e10,e11;
-    };
 
     struct Term
     {
@@ -35,7 +30,7 @@ namespace Energy
         Term(const ODRModel& ODR);
 
         template<class TIterator>
-        void add(double uOut,double uInn,TIterator begin, TIterator end);
+        void add(double fOut,double fInn,double A,double S,TIterator begin, TIterator end);
 
         VariableMap vm;
         UnaryTermsMatrix UTM;

@@ -31,6 +31,14 @@ struct PointWeightComparator
     }
 };
 
+struct PointWeightSet
+{
+    std::set<PointWeight,PointWeightComparator> pInnSet;
+    std::set<PointWeight,PointWeightComparator> pOutSet;
+
+    std::size_t size(){ return pInnSet.size() + pOutSet.size(); }
+};
+
 
 struct NormalInterval
 {
@@ -38,7 +46,7 @@ struct NormalInterval
     typedef std::pair<CurveCirculator,CurveCirculator> IntervalCirculator;
     typedef std::unordered_map<Point,IntervalCirculator> PointIntervalMap;
 
-    typedef std::set<PointWeight,PointWeightComparator> NormalNeighbors;
+    typedef PointWeightSet NormalNeighbors;
 
     NormalInterval(const DigitalSet& shape, int interval):shape(shape),interval(interval)
     {
@@ -88,12 +96,21 @@ struct NormalInterval
         for(auto it=ic.first;it!=ic.second;++it)
         {
             auto pixels = kspace.sUpperIncident(*it);
-            for(auto kp:pixels)
-            {
-                auto _p = kspace.sCoords(kp);
-                if (shape(_p)) nn.insert(std::make_pair(_p, weight(i)));
+            Point pInn,pOut;
 
+            if(shape( kspace.sCoords(pixels[0]) ))
+            {
+                pInn = kspace.sCoords(pixels[0]);
+                pOut = kspace.sCoords(pixels[1]);
+            }else
+            {
+                pOut = kspace.sCoords(pixels[0]);
+                pInn = kspace.sCoords(pixels[1]);
             }
+
+            nn.pInnSet.insert(std::make_pair(pInn, weight(i)));
+            nn.pOutSet.insert(std::make_pair(pOut, weight(i)));
+
             ++i;
         }
 
@@ -158,12 +175,14 @@ uint intersectionCount(const DigitalSet& A, const DigitalSet& B)
     return c;
 }
 
-double foregroundInters(const DigitalSet& shape, const RealPoint& ballCenter, double ballRadius, double h)
+double foregroundInters(const DigitalSet& shape, const RealPoint& ballCenter, double ballRadius, double h,bool outer)
 {
     DigitalSet ball = DIPaCUS::Shapes::ball(h,ballCenter[0]*h,ballCenter[1]*h,ballRadius);
     double cInt = intersectionCount(ball,shape);
 
-    return fabs(ball.size()/2-cInt);
+//    return cInt;
+    if(outer) return ball.size()-cInt;
+    else return cInt;
 }
 
 int main(int argc, char* argv[])
@@ -171,19 +190,20 @@ int main(int argc, char* argv[])
     typedef DIPaCUS::Representation::Image2D Image2D;
 
     double radius=3;
-    double h=0.25;
-    double level=2;
-    int optBand=0;
+    double h=0.125;
+    double level=0.5;
+    int optBand=1;
     std::string outputFolder=argv[1];
 
-    DigitalSet _shape = DIPaCUS::Shapes::flower(h,0,0,20,5,2);
+//    DigitalSet _shape = DIPaCUS::Shapes::flower(h,0,0,20,5,2);
+    DigitalSet _shape = DIPaCUS::Shapes::square(h,0,0,20);
     DigitalSet shape = DIPaCUS::Transform::bottomLeftBoundingBoxAtOrigin(_shape);
     const Domain& domain=shape.domain();
 
 
-    for(int i=0;i<10;++i)
+    for(int i=0;i<100;++i)
     {
-        NormalInterval ni(shape,5);
+        NormalInterval ni(shape,3);
 
         ODRPixels odrPixels(radius,h,level,ODRPixels::LevelDefinition::LD_CloserFromCenter,ODRPixels::NeighborhoodType::FourNeighborhood,optBand);
         ODRModel ODR = odrPixels.createODR(ODRPixels::ApplicationMode::AM_OptimizationBoundary,shape);
@@ -199,8 +219,10 @@ int main(int argc, char* argv[])
 
         TangentMap tm(shape,h);
         Energy::Term term(ODR);
-        for(auto p:ODR.applicationRegion)
+        for(auto ptm_pair:tm.ptm)
         {
+            Point p = ptm_pair.first;
+
             RealPoint center = p;
             if(tm.ptm.find(p)==tm.ptm.end()) continue;
 
@@ -215,17 +237,20 @@ int main(int argc, char* argv[])
             RealPoint centerInn = center + pInn;
 
             auto neighbors = ni.get(p);
-            double s=neighbors.size();
+            double sInn=neighbors.pInnSet.size();
+            double sOut=neighbors.pOutSet.size();
 
-            double uOut = foregroundInters(shape,centerOut,radius,h)-s;
-            double uInn = foregroundInters(shape,centerInn,radius,h)-s;
+            double fOut = foregroundInters(shape,centerOut,radius,h,true)-sOut;
+            double fInn = foregroundInters(shape,centerInn,radius,h,false)-sInn;
 
-            if(uOut > uInn)
-            {
-                std::cout << "Giripoca" << std::endl;
-            }
+            double A = DIPaCUS::Shapes::ball(h,0,0,radius).size()/2;
 
-            term.add(uOut,uInn,neighbors.begin(),neighbors.end());
+            std::set<PointWeight,PointWeightComparator> allTogether;
+            allTogether.insert(neighbors.pInnSet.begin(),neighbors.pInnSet.end());
+            allTogether.insert(neighbors.pOutSet.begin(),neighbors.pOutSet.end());
+
+            term.add(fOut,fInn,A,sInn+sOut,allTogether.begin(),allTogether.end());
+
 
         }
 
