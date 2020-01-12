@@ -32,7 +32,7 @@ do
 
     mkdir -p $OUTPUT_PLOT_FOLDER
 
-    DATA_BIN=${ROOT_FOLDER}/cmake-build-debug/chapter6/shape-potential-evolution/ch6-shape-potential-evolution
+    DATA_BIN=${ROOT_FOLDER}/cmake-build-release/chapter6/shape-potential-evolution/ch6-shape-potential-evolution
     $DATA_BIN $SHAPE $h $RADIUS $IT ${OUTPUT_DATA_FOLDER}
 
     create_multiplot ${OUTPUT_PLOT_FOLDER}/${SHAPE}.eps "$SHAPE" \
