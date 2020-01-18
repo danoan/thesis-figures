@@ -14,20 +14,22 @@ INPUT_BASE_PATH=${SCRIPT_PATH}/input/fixed-points
 function run_flow()
 {
     energy=$1
+    len_pen=$2
 
-    OUTPUT_FLOW=${SCRIPT_PATH}/output/fixed-points/$energy
-    OUTPUT_PLOTS=${OUTPUT_FLOW}/plots
+    OUTPUT_FLOW=${SCRIPT_PATH}/output/fixed-points/$energy/len_pen_$len_pen
 
-    $EXHAUSTIVE_APP -S${INPUT_BASE_PATH}/flower-1/input.pgm -h0.25 -r5 -i400 -tii -sbest -m2 -M50 -j1 -a0.01 -n32 -e$energy -F${INPUT_BASE_PATH}/flower-1/pixelMask.pgm ${OUTPUT_FLOW}/flower-1
-    $SUMMARY_APP -j2 -d${OUTPUT_FLOW}/flower-1/pixelMask.pgm ${OUTPUT_FLOW}/flower-1 ${OUTPUT_FLOW}/flower-1/summary.eps
+    $EXHAUSTIVE_APP -S${INPUT_BASE_PATH}/flower-1/input.pgm -h0.25 -r5 -i600 -tii -sbest -j1 -a$len_pen -n32 -e$energy -F${INPUT_BASE_PATH}/flower-1/pixelMask.pgm ${OUTPUT_FLOW}/flower-1
+    $SUMMARY_APP -j10 -d${OUTPUT_FLOW}/flower-1/pixelMask.pgm ${OUTPUT_FLOW}/flower-1 ${OUTPUT_FLOW}/flower-1/summary.eps
 
-    $EXHAUSTIVE_APP -S${INPUT_BASE_PATH}/flower-2/input.pgm -h0.25 -r5 -i400 -tii -sbest -m2 -M50 -j1 -a0.01 -n32 -e$energy -F${INPUT_BASE_PATH}/flower-2/pixelMask.pgm ${OUTPUT_FLOW}/flower-2
-    $SUMMARY_APP -j2 -d${OUTPUT_FLOW}/flower-2/pixelMask.pgm ${OUTPUT_FLOW}/flower-2 ${OUTPUT_FLOW}/flower-2/summary.eps
+    $EXHAUSTIVE_APP -S${INPUT_BASE_PATH}/flower-2/input.pgm -h0.25 -r5 -i600 -tii -sbest -j1 -a$len_pen -n32 -e$energy -F${INPUT_BASE_PATH}/flower-2/pixelMask.pgm ${OUTPUT_FLOW}/flower-2
+    $SUMMARY_APP -j10 -d${OUTPUT_FLOW}/flower-2/pixelMask.pgm ${OUTPUT_FLOW}/flower-2 ${OUTPUT_FLOW}/flower-2/summary.eps
 }
 
 
-run_flow sqc
-run_flow elastica
+run_flow elastica 0.1
+run_flow elastica 0.01
+run_flow selastica 0.1
+run_flow selastica 0.01
 
 
 

@@ -47,8 +47,8 @@ function fixed_points
 
 function flow
 {
-    FLOWER_ELASTICA_FOLDER=${BASE_FOLDER}/flow/flower/radius_5/ii/elastica/len_pen_0.01000/m2M50/jonctions_1/best/gs_0.25000
-    FLOWER_SQC_FOLDER=${BASE_FOLDER}/flow/flower/radius_5/ii/sqc/len_pen_0.01000/m2M50/jonctions_1/best/gs_0.25000
+    FLOWER_ELASTICA_FOLDER=${BASE_FOLDER}/flow/flower/radius_5/ii/elastica/len_pen_0.01000/jonctions_1/best/gs_0.25000
+    FLOWER_SQC_FOLDER=${BASE_FOLDER}/flow/flower/radius_5/ii/sqc/len_pen_0.01000/jonctions_1/best/gs_0.25000
 
     sqc_evaluation $FLOWER_ELASTICA_FOLDER $FLOWER_ELASTICA_FOLDER/energy-sqc.txt
 

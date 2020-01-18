@@ -12,13 +12,30 @@ RADIUS=$4
 LENGTH_PEN=$5
 ENERGY=$6
 
+gp_plot_config()
+{
+    lenpen=$( echo $LENGTH_PEN | xargs -I{} printf "%.3f" {} | tr , .)
+	printf "set title '$1';
+	set key right top;
+	set yrange[0:];
+	set xlabel 'Iterations';
+	set ylabel 'Elastica ({/Symbol a}=$lenpen, {/Symbol b}=1)';"
+}
+
+gp_last_plot()
+{
+	printf "'$1' u 1:2 w lp ls $3 title '$2';"
+    v=$(python -c "import math; print(4*math.pi*(${LENGTH_PEN}**0.5))")
+    printf "set arrow 10 from 0,$v to graph 1, first $v nohead lw 3 dt 2 front;"
+}
+
 mkdir -p $OUTPUT_FOLDER
 
 shapes="bean square flower triangle ellipse"
 
 for s in $shapes
 do
-    PREFIX_INPUT="$DATA_FOLDER/$s/radius_$RADIUS/$ESTIMATOR/$ENERGY/len_pen_$LENGTH_PEN/m2M50/jonctions_1/best/gs_"
+    PREFIX_INPUT="$DATA_FOLDER/$s/radius_$RADIUS/$ESTIMATOR/$ENERGY/len_pen_$LENGTH_PEN/jonctions_1/best/gs_"
     OUTPUT_FILEFOLDER="$OUTPUT_FOLDER/$ESTIMATOR/radius_$RADIUS/length_pen_$LENGTH_PEN"
 
     mkdir -p $OUTPUT_FILEFOLDER

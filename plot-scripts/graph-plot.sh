@@ -3,6 +3,7 @@
 gp_plot_config()
 {
 	printf "set title '$1';
+	set key right center;
 	set yrange[0:];
 	set xlabel 'Iterations';
 	set ylabel 'Elastica ({/Symbol a}=0.01, {/Symbol b}=1)';"
@@ -30,7 +31,6 @@ gp_save()
 
     printf "set size 1.0, 0.6;
             set terminal postscript portrait enhanced color lw 2 \"Helvetica\" 20;
-            set key right center;
             set output \"my-plot.ps\";
             replot;"
 }
