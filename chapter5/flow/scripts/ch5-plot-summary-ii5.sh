@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-ROOT_FOLDER=$(cd $SCRIPT_PATH && cd ../../../../ && pwd)
-source "${ROOT_FOLDER}/plot-scripts/graph-plot.sh"
+PROJECT_PATH=$( cd $SCRIPT_PATH && cd ../../../ && pwd)
+source "${PROJECT_PATH}/plot-scripts/graph-plot.sh"
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 DATA_FOLDER=$( realpath $1 )
-OUTPUT_FOLDER=$( realpath $2 )
+OUTPUT_FOLDER=$2
 LENGTH_PEN=$3
 ENERGY=elastica
 
@@ -42,7 +42,7 @@ prefix_input()
 }
 
 
-create_multiplot "$OUTPUT_FOLDER/summary-ii5-lp${LENGTH_PEN}.eps" "II-5  h=0.25" "$( prefix_input triangle 5 ii $LENGTH_PEN 0.25000 $ENERGY )/energy.txt" "triangle" \
+create_multiplot "$OUTPUT_FOLDER/summary-ii5.eps" "II-5  h=0.25" "$( prefix_input triangle 5 ii $LENGTH_PEN 0.25000 $ENERGY )/energy.txt" "triangle" \
 "$( prefix_input square 5 ii $LENGTH_PEN 0.25000 $ENERGY )/energy.txt" "square" \
 "$( prefix_input flower 5 ii $LENGTH_PEN 0.25000 $ENERGY )/energy.txt" "flower" \
 "$( prefix_input ellipse 5 ii $LENGTH_PEN 0.25000 $ENERGY )/energy.txt" "ellipse" \

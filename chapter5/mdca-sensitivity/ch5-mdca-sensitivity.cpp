@@ -58,8 +58,8 @@ int main(int argc, char* argv[])
 
     boost::filesystem::create_directories(outputFolder);
 
-    cv::Mat img1 = cv::imread(imageFolderPath + "/chapter5/mdca-sensitivity/0017-a.pgm",cv::IMREAD_GRAYSCALE);
-    cv::Mat img2 = cv::imread(imageFolderPath + "/chapter5/mdca-sensitivity/0017.pgm",cv::IMREAD_GRAYSCALE);
+    cv::Mat img1 = cv::imread(imageFolderPath + "/0017-a.pgm",cv::IMREAD_GRAYSCALE);
+    cv::Mat img2 = cv::imread(imageFolderPath + "/0017.pgm",cv::IMREAD_GRAYSCALE);
 
     DigitalSet ds1 = toDigitalSet(img1);
     DigitalSet ds2 = toDigitalSet(img2);

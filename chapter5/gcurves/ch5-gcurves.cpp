@@ -15,12 +15,11 @@ int main(int argc, char* argv[])
     }
 
     std::string outputFolder = argv[1];
+    std::string gcOutputFolder = outputFolder+"/gc";
 
-    std::string gluedCurveOutputFilepath = outputFolder + "/glued-curve-example.eps";
-    boost::filesystem::path p(gluedCurveOutputFilepath);
-    boost::filesystem::create_directories(p.remove_filename());
+    boost::filesystem::create_directories(gcOutputFolder);
 
-    GluedCurve::gluedCurve(gluedCurveOutputFilepath);
+    GluedCurve::gluedCurve(gcOutputFolder);
     DistanceTransform::distanceTransform(3,0.25,outputFolder);
 
     return 0;

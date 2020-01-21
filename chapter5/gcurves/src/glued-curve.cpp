@@ -4,7 +4,7 @@ namespace Fig2
 {
     namespace GluedCurve
     {
-        void gluedCurve(const std::string& outputFilePath)
+        void gluedCurve(const std::string& outputFolder)
         {
             typedef GenerateSeedPairs::SeedPair SeedPair;
             typedef ExhaustiveGC::CheckableSeedPair CheckableSeedPair;
@@ -12,22 +12,19 @@ namespace Fig2
 
             typedef std::vector< CheckableSeedPair > CheckableSeedPairVector;
 
-
             DigitalSet ds = DIPaCUS::Shapes::square();
             EnergyInput::LinelSet ls;
             EnergyInput energyInput(EnergyType::Elastica,EnergyInput::MDCA,1.0,5,0.001,ls);
-            SearchParameters sp(SearchParameters::Strategy::Best, 1, 11, 12,energyInput,2,1000);
+            SearchParameters sp(SearchParameters::Strategy::Best, 1, 11, 12,false,1,0,0,energyInput,2,0);
 
             const DGtal::Z2i::Domain& domain = ds.domain();
             KSpace kspace;
             kspace.init(domain.lowerBound(),domain.upperBound(),true);
 
-            GCurve::Range gcRange(ds,5);
+            GCurve::Range gcRange(ds,11);
             GenerateSeedPairs::SeedPairsList spl;
             GenerateSeedPairs(spl,gcRange);
 
-
-            FilterSeedPairs(spl,sp.minGCLength,sp.maxGCLength);
             std::cout << spl.size() << " qualified seeds\n";
 
 
@@ -35,14 +32,6 @@ namespace Fig2
             std::for_each(spl.begin(),spl.end(),[&cspv](SeedPair sp) mutable {cspv.push_back( CheckableSeedPair(sp) );});
 
 
-            DGtal::Board2D board;
-            board << ds;
-
-            auto mainC = gcRange.beginSeed()->inCirculatorBegin;
-            auto outC = gcRange.beginSeed()->outCirculatorBegin;
-
-            GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,mainC,mainC);
-            GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,outC,outC);
 
             auto range = magLac::Core::addRange(cspv.begin(),cspv.end(),sp.jointPairs);
             auto combinator = magLac::Core::Single::createCombinator(range);
@@ -51,33 +40,68 @@ namespace Fig2
             typedef decltype(combinator) MyCombinator;
             typedef MyCombinator::MyResolver MyResolver;
 
-            std::vector<CheckableSeedPair> seedCombination(sp.jointPairs);
-            while( combinator.next(resolver) )
+            GCurve::Seed mainInnerSeed;
+            GCurve::Seed mainOuterSeed;
+            for(auto it=gcRange.begin();it!=gcRange.end();++it)
             {
-                resolver >> seedCombination;
-                if(seedCombination[0].data().first.type==GCurve::Seed::SeedType::MainOuter) break;
+                if(it->seed.type==GCurve::Seed::SeedType::MainInner)
+                {
+                    mainInnerSeed = it->seed;
+                    break;
+                }
+            }
+
+            for(auto it=gcRange.begin();it!=gcRange.end();++it)
+            {
+                if(it->seed.type==GCurve::Seed::SeedType::MainOuter)
+                {
+                    mainOuterSeed = it->seed;
+                    break;
+                }
             }
 
 
-            Curve curve;
-            CurveFromJoints(curve, seedCombination.data(), sp.jointPairs);
+            DGtal::Board2D board;
+            std::vector<CheckableSeedPair> seedCombination(sp.jointPairs);
+            int i=1;
+            while( combinator.next(resolver) )
+            {
+                board.clear();
+                board << ds;
 
-            GCurve::Utils::drawCurve(board,DGtal::Color::Red,DGtal::Color::Red,curve.begin(),curve.end());
+                auto mainC = mainInnerSeed.inCirculatorBegin;
+                auto innC = mainInnerSeed.outCirculatorBegin;
+                auto outC = mainOuterSeed.inCirculatorBegin;
 
-            GCurve::Utils::drawCurve(board,DGtal::Color::Green,DGtal::Color::Green,
-                                     seedCombination[0].data().first.inCirculatorBegin,
-                                     seedCombination[0].data().first.inCirculatorEnd);
-
-            GCurve::Utils::drawCurve(board,DGtal::Color::Green,DGtal::Color::Green,
-                                     seedCombination[0].data().first.inCirculatorEnd,
-                                     seedCombination[0].data().second.outCirculatorBegin+1);
-
-            board << DGtal::CustomStyle(curve.begin()->className() + "/Paving", new DGtal::CustomColors(DGtal::Color::Blue, DGtal::Color::Blue));
-            board << seedCombination[0].data().first.linkLinels[0]
-                  << seedCombination[0].data().second.linkLinels[0];
+                GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,mainC,mainC);
+                GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,innC,innC);
+                GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,outC,outC);
 
 
-            board.saveEPS(outputFilePath.c_str());
+                resolver >> seedCombination;
+
+                Curve curve;
+                CurveFromJoints(curve, seedCombination.data(), sp.jointPairs);
+
+                GCurve::Utils::drawCurve(board,DGtal::Color::Red,DGtal::Color::Red,curve.begin(),curve.end());
+
+                GCurve::Utils::drawCurve(board,DGtal::Color::Green,DGtal::Color::Green,
+                                         seedCombination[0].data().first.inCirculatorBegin,
+                                         seedCombination[0].data().first.inCirculatorEnd);
+
+                GCurve::Utils::drawCurve(board,DGtal::Color::Green,DGtal::Color::Green,
+                                         seedCombination[0].data().first.inCirculatorEnd,
+                                         seedCombination[0].data().second.outCirculatorBegin+1);
+
+                board << DGtal::CustomStyle(curve.begin()->className() + "/Paving", new DGtal::CustomColors(DGtal::Color::Blue, DGtal::Color::Blue));
+                board << seedCombination[0].data().first.linkLinels[0]
+                      << seedCombination[0].data().second.linkLinels[0];
+
+                std::string currOutputPath = outputFolder + "/" + std::to_string(i++) + ".eps";
+                board.saveEPS(currOutputPath.c_str());
+
+            }
+
 
         };
     }
