@@ -29,7 +29,7 @@ gp_last_plot()
 }
 
 
-DATA_BIN=${ROOT_FOLDER}/cmake-build-release/chapter6/balance-evolution-shape/maxDiff/ch6-balance-evolution-maxDiff
+DATA_BIN=${ROOT_FOLDER}/cmake-build-release/chapter6/balance-evolution-shape/maxDiff/ch7-balance-evolution-maxDiff
 OUTPUT_BASE_FOLDER=${SCRIPT_PATH}/output
 
 function radius_sequence_loop()

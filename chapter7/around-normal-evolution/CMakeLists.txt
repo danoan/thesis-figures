@@ -1,29 +1,29 @@
 cmake_minimum_required(VERSION 3.2)
-project(ch6-shape-potential-evolution)
+project(ch7-around-normal-evolution)
 
-add_executable(ch6-shape-potential-evolution ch6-shape-potential-evolution.cpp
-        src/Flow.cpp)
+add_executable(ch7-around-normal-evolution ch7-around-normal-evolution.cpp
+        energy.cpp)
 
 if(${USE_REMOTE_REPOSITORIES})
-    add_dependencies(ch6-shape-potential-evolution dipacus scabolic geoc)
+    add_dependencies(ch7-around-normal-evolution dipacus scabolic geoc)
 endif()
 
-target_include_directories(ch6-shape-potential-evolution PRIVATE
+target_include_directories(ch7-around-normal-evolution PRIVATE
         include
         ${BOOST_INCLUDE_DIRS}
         ${DIPACUS_INCLUDE_DIRS}
         ${SCABOLIC_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS})
 
-target_link_directories(ch6-shape-potential-evolution PRIVATE
+target_link_directories(ch7-around-normal-evolution PRIVATE
         ${DIPACUS_LIBS_DIR}
         ${SCABOLIC_LIBS_DIR}
         ${BOOST_LIBS_DIR})
 
-target_link_libraries(ch6-shape-potential-evolution
-        -lscabolic-optimization
-        -lscabolic-energy
+target_link_libraries(ch7-around-normal-evolution
         -lscabolic-core
+        -lscabolic-energy
+        -lscabolic-optimization
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base
@@ -32,5 +32,5 @@ target_link_libraries(ch6-shape-potential-evolution
         ${DGTAL_LIBRARIES}
         ${OpenCV_LIBS})
 
-install(TARGETS ch6-shape-potential-evolution
+install(TARGETS ch7-around-normal-evolution
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
