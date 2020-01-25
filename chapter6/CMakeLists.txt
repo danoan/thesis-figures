@@ -20,3 +20,5 @@ set(JMIV_MAGLAC_INCLUDE_DIRS ${EXTPROJECTS_BUILD_DIR}/jmiv/include CACHE PATH "M
 set(JMIV_MAGLAC_LIBS_DIR ${EXTPROJECTS_BUILD_DIR}/jmiv/lib CACHE PATH "MagLac libraries location path.")
 
 add_subdirectory(complement-reasoning)
+add_subdirectory(topology-change)
+add_subdirectory(unlabeled-ratio)
