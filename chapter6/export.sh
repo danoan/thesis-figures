@@ -5,7 +5,7 @@ PROJECT_PATH=$( cd $SCRIPT_PATH && cd .. && pwd)
 
 LATEX_THESIS_FIGURES_FOLDER=$(realpath $1)
 
-FIGURES_PROJECTS="complement-reasoning radius-effect unlabeled-ratio level-effect"
+FIGURES_PROJECTS="complement-reasoning radius-effect unlabeled-ratio level-effect topology-change segmentation"
 
 for fp in $FIGURES_PROJECTS
 do

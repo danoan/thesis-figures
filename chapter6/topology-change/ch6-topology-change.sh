@@ -4,7 +4,7 @@ SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJECT_PATH=$( cd $SCRIPT_PATH && cd ../.. && pwd )
 
 DATA_FOLDER=${SCRIPT_PATH}/data
-OUTPUT_FOLDER=${SCRIPT_PATH}/output/topology-changes
+OUTPUT_FOLDER=${SCRIPT_PATH}/output/topology-change
 
 mkdir -p ${DATA_FOLDER}
 mkdir -p ${OUTPUT_FOLDER}
