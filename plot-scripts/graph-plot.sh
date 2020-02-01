@@ -1,5 +1,7 @@
 #!/bin/bash
 
+temp_plot="my-plot-$RANDOM.ps"
+
 gp_plot_config()
 {
 	printf "set title '$1';
@@ -31,7 +33,7 @@ gp_save()
 
     printf "set size 1.0, 0.6;
             set terminal postscript portrait enhanced color lw 2 \"Helvetica\" 20;
-            set output \"my-plot.ps\";
+            set output \"${temp_plot}\";
             replot;"
 }
 
@@ -78,7 +80,7 @@ create_multiplot()
 
 
 	`gnuplot -e "$buffer"`
-	`mv my-plot.ps ${fileoutput}`
+	`mv ${temp_plot} ${fileoutput}`
 }
 
 
