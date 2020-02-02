@@ -1,5 +1,6 @@
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/shapes/parametric/AccFlower2D.h>
+#include <DGtal/io/boards/Board2D.h>
 
 #include <DIPaCUS/derivates/Misc.h>
 
@@ -82,6 +83,7 @@ double outerCoefficient(const DigitalSet& shape, const RealPoint& ballCenter, do
 double innerCoefficient(const DigitalSet& shape, const RealPoint& ballCenter, double estimationBallRadius, double h)
 {
     DigitalSet ball = DIPaCUS::Shapes::ball(h,ballCenter[0]*h,ballCenter[1]*h,estimationBallRadius);
+
     double foreground = pow(h,2)*intersectionCount(ball,shape);
     double ballArea = pow(h,2)*ball.size();
 
@@ -154,6 +156,54 @@ double outerEstimation(double areaDiff,double simpleRadius)
 
 }
 
+void drawEstimationBalls(const DigitalSet& shape,const RealPoint& centerInn, const RealPoint& centerOut, double ballRadius, double h, const std::string& outputFilepath)
+{
+    DigitalSet ballInn = DIPaCUS::Shapes::ball(h,centerInn[0]*h,centerInn[1]*h,ballRadius);
+    DigitalSet ballOut = DIPaCUS::Shapes::ball(h,centerOut[0]*h,centerOut[1]*h,ballRadius);
+
+    DigitalSet innerRegion(ballInn.domain());
+    DIPaCUS::SetOperations::setDifference(innerRegion,ballInn,shape);
+
+    DigitalSet outerRegion(ballInn.domain());
+    DIPaCUS::SetOperations::setIntersection(outerRegion,ballOut,shape);
+
+    DigitalSet intersection(ballInn.domain());
+    DIPaCUS::SetOperations::setIntersection(intersection,innerRegion,outerRegion);
+
+    Domain domain(shape.domain().lowerBound() - Point(2.0/h,2.0/h), shape.domain().upperBound() + Point(2.0/h,2.0/h) );
+
+
+    DGtal::Board2D board;
+    board << DGtal::SetMode(shape.className(),"Paving");
+    board << domain;
+
+    std::string specificStyle = shape.className() + "/Paving";
+    board << DGtal::CustomStyle(specificStyle, new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::Gray));
+    board << shape;
+
+    board << DGtal::CustomStyle(specificStyle, new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::Blue));
+    board << ballInn;
+
+    board << DGtal::CustomStyle(specificStyle, new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::Green));
+    board << ballOut;
+
+    board << DGtal::CustomStyle(specificStyle, new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::Yellow));
+    board << innerRegion;
+
+    board << DGtal::CustomStyle(specificStyle, new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::Navy));
+    board << outerRegion;
+
+    board << DGtal::CustomStyle(specificStyle, new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::Cyan));
+    board << intersection;
+
+    board.saveSVG(outputFilepath.c_str());
+}
+
+Point round(const RealPoint& rp)
+{
+    return Point( (int) std::round(rp[0]), (int) std::round( rp[1] ) );
+}
+
 typedef std::pair<double,double> KPair;
 typedef std::map<double,KPair> KMap;
 
@@ -176,6 +226,7 @@ KMap outerEstimation(const TShape& shape,double h,double r,int order,OuterEstima
 
         RealPoint centerOut = p -(r/h+h/2.0)*realNormal;
         RealPoint centerInn = p + (r/h-h/2.0)*realNormal;
+
 
         double innCoeff = innerCoefficient(ds,centerInn,r+EPSILON,h);
         double outCoeff = outerCoefficient(ds,centerOut,r+EPSILON,h);
