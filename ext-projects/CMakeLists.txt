@@ -6,6 +6,7 @@ include(cmake-files/master/GEOC.cmake)
 include(cmake-files/master/magLac.cmake)
 include(cmake-files/master/SCaBOliC.cmake)
 include(cmake-files/master/BTools.cmake)
+include(cmake-files/master/graph-flow.cmake)
 
 include(cmake-files/jmiv/DIPaCUS.cmake)
 include(cmake-files/jmiv/GCurve.cmake)

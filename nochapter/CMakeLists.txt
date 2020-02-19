@@ -1,0 +1,5 @@
+add_subdirectory(digitization)
+add_subdirectory(myshape)
+add_subdirectory(digital-grid)
+add_subdirectory(standard-line)
+add_subdirectory(graph-cut-evolution)

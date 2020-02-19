@@ -58,19 +58,21 @@ def summary_flow(c):
 
     shape,radius,estimator,energy,length_pen,jonctions,strategy,gs = c
 
+    opt_radius = 1.0/(length_pen['value']**0.5)
+
     jump=5
     subprocess.call( [binary,
                       flow_images_folder_path,
                       "%s/summary.svg" % (flow_images_folder_path,),
                       "%s%d" % ("-j",jump),
-                      "%s%f" % ("-r",radius['value']),
+                      "%s%f" % ("-r",opt_radius),
                       "%s%f" % ("-h",gs['value'])])
 
     subprocess.call( [binary,
                       flow_images_folder_path,
                       "%s/summary.eps" % (flow_images_folder_path,),
                       "%s%d" % ("-j",jump),
-                      "%s%f" % ("-r",radius['value']),
+                      "%s%f" % ("-r",opt_radius),
                       "%s%f" % ("-h",gs['value'])])
 
 

@@ -31,6 +31,7 @@ find_package(DGtal REQUIRED)
 find_package(OpenCV REQUIRED)
 
 add_subdirectory(ext-projects)
+add_subdirectory(nochapter)
 add_subdirectory(chapter5)
 add_subdirectory(chapter6)
 add_subdirectory(chapter7)
