@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-ROOT_FOLDER=$( cd $SCRIPT_PATH && cd ../../../ && pwd )
+ROOT_FOLDER=$( cd $SCRIPT_PATH && cd ../../../../ && pwd )
 OUTPUT_FOLDER=${SCRIPT_PATH}/output
 
 source "${ROOT_FOLDER}/plot-scripts/graph-plot.sh"

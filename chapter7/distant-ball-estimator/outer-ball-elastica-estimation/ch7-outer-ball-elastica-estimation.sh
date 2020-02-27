@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-PROJECT_PATH=$( cd $SCRIPT_PATH && cd ../.. && pwd )
+PROJECT_PATH=$( cd $SCRIPT_PATH && cd ../../../ && pwd )
 
 APP=${PROJECT_PATH}/cmake-build-release/chapter7/outer-ball-estimator/ch7-outer-ball-estimator
 DATA_BASE_FOLDER=${SCRIPT_PATH}/data

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-ROOT_FOLDER=$( cd $SCRIPT_PATH && cd ../../ && pwd )
+ROOT_FOLDER=$( cd $SCRIPT_PATH && cd ../../../ && pwd )
 PLOT_SCRIPT_FOLDER=${ROOT_FOLDER}/chapter6/plot-scripts
 
 DATA_BIN=${ROOT_FOLDER}/cmake-build-release/chapter6/balance-evolution-square/ch7-balance-evolution-square
