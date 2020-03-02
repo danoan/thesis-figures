@@ -5,7 +5,7 @@ PROJECT_PATH=$( cd $SCRIPT_PATH && cd .. && pwd)
 
 LATEX_THESIS_FIGURES_FOLDER=$(realpath $1)
 
-FIGURES_PROJECTS="graph-flow constrained-elastica"
+FIGURES_PROJECTS="graph-flow constrained-elastica segmentation"
 
 for fp in $FIGURES_PROJECTS
 do
