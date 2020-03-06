@@ -179,12 +179,12 @@ gp_plot_config()
     printf "set title '$1';
     set yrange [-0.1:1.1];
     set xlabel 'Iterations';
-    set ylabel 'Perc. Unlabeled';"
+    set ylabel 'Unlabeled Ratio';"
 }
 
 
-#produce_flow_data
-#produce_unlabeled_evolution_data
+produce_flow_data
+produce_unlabeled_evolution_data
 produce_plot
 
 

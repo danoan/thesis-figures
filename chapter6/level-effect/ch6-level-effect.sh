@@ -25,7 +25,7 @@ shape_flow()
         DATA_FOLDER="${DATA_BASE_FOLDER}/$( $GET_PATH $shape $method $lp $radius $level )"
         mkdir -p ${DATA_FOLDER}
         $SHAPE_FLOW_APP -r$radius -i1000 -l$level -p double -n4 -q1 -t0 -g$lp -m$method -S$shape -h0.25 ${DATA_FOLDER} && \
-        ${IMAGE_ESTIMATOR_APP} -mall-in-folder -f ${DATA_FOLDER} -esqc-ii -h0.25 -r$radius -a$lp | sort > ${DATA_FOLDER}/ii.txt &
+        ${IMAGE_ESTIMATOR_APP} -mall-in-folder -f ${DATA_FOLDER} -esqc-ii -h0.25 -r5 -a$lp | sort > ${DATA_FOLDER}/ii.txt &
     done
 
     wait
@@ -56,7 +56,8 @@ experiment_sequence flower improve
 
 ${AUX_SCRIPT_PATH}/summary-flow.sh $SUMMARY_FLOW_APP $DATA_BASE_FOLDER 10
 ${SCRIPT_PATH}/plots.sh "$DATA_BASE_FOLDER" "$DATA_BASE_FOLDER"
-
 ${AUX_SCRIPT_PATH}/move-convert-eps.sh $DATA_BASE_FOLDER $OUTPUT_BASE_FOLDER
+
+
 
 

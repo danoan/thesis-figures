@@ -24,7 +24,7 @@ shape_flow()
         DATA_FOLDER=${DATA_BASE_FOLDER}/$( $GET_PATH $shape $lp $method $r )
         mkdir -p ${DATA_FOLDER}
         $SHAPE_FLOW_APP -r$r -i1000 -l0 -p double-opt -n4 -q1 -t0 -g$lp -m$method -S$shape -h0.25 ${DATA_FOLDER} && \
-        ${IMAGE_ESTIMATOR_APP} -mall-in-folder -f ${DATA_FOLDER} -esqc-ii -h0.25 -r$r -a$lp | sort > ${DATA_FOLDER}/ii.txt &
+        ${IMAGE_ESTIMATOR_APP} -mall-in-folder -f ${DATA_FOLDER} -esqc-ii -h0.25 -r5 -a$lp | sort > ${DATA_FOLDER}/ii.txt &
     done
 
     wait
@@ -40,15 +40,16 @@ experiment_sequence()
     shape_flow $shape 1.0 $method
 }
 
-#experiment_sequence triangle improve &
-#experiment_sequence flower improve
+experiment_sequence triangle improve &
+experiment_sequence flower improve
 
 experiment_sequence triangle probe &
 experiment_sequence flower probe
 
 ${AUX_SCRIPT_PATH}/summary-flow.sh $SUMMARY_FLOW_APP $DATA_BASE_FOLDER
-#${SCRIPT_PATH}/plots.sh "$DATA_BASE_FOLDER" "$DATA_BASE_FOLDER"
+${SCRIPT_PATH}/plots.sh "$DATA_BASE_FOLDER" "$DATA_BASE_FOLDER"
 
-${AUX_SCRIPT_PATH}/move-convert-eps.sh $DATA_BASE_FOLDER $OUTPUT_BASE_FOLDER
+${AUX_SCRIPT_PATH}/move-convert-eps.sh "$DATA_BASE_FOLDER" "$OUTPUT_BASE_FOLDER" summary.eps
+${AUX_SCRIPT_PATH}/move-convert-eps.sh "$DATA_BASE_FOLDER" "$OUTPUT_BASE_FOLDER" radius-effect.eps
 
 

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 temp_plot="my-plot-$RANDOM.ps"
+pointInterval=10
 
 gp_plot_config()
 {
@@ -13,7 +14,7 @@ gp_plot_config()
 
 gp_save()
 {
-    pi=10
+    pi=$pointInterval
     printf "set style line 1 lc rgb '#bf3a2c' pt 1 ps 2 lt 1 lw 2 pi $pi;
             set style line 2 lc rgb '#577bb4' pt 2 ps 2 lt 1 lw 2 pi $pi;
             set style line 3 lc rgb '#77ac50' pt 3 ps 2 lt 1 lw 2 pi $pi;

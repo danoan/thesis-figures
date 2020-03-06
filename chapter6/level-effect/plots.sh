@@ -35,10 +35,11 @@ create_temp_plot_file()
     temp_plot_num=$(cat $temp_file_num)
     echo $(( temp_plot_num+1 )) > $temp_file_num
 
-    ii_file=${DATA_BASE_FOLDER}/$( $GET_PATH $shape $method $lp $radius $level)/ii.txt
     temp_file_name="${temp_base_name}.${temp_plot_num}"
 
+    ii_file=${DATA_BASE_FOLDER}/$( $GET_PATH $shape $method $lp $radius $level)/ii.txt
     cut $ii_file -d':' -f2 | nl -w1 > $temp_file_name
+
     echo $temp_file_name
 }
 
