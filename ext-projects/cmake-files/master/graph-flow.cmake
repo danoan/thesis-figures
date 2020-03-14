@@ -13,8 +13,12 @@ ExternalProject_Add(graph-flow
         -DGCURVE_INCLUDE_DIRS=${EXTPROJECTS_BUILD_DIR}/include
         -DGCURVE_LIBS_DIR=${EXTPROJECTS_BUILD_DIR}/lib
         -DGEOC_INCLUDE_DIRS=${EXTPROJECTS_BUILD_DIR}/include
+        -DBTOOLS_INCLUDE_DIRS=${EXTPROJECTS_BUILD_DIR}/include
+        -DBTOOLS_LIBS_DIRS=${EXTPROJECTS_BUILD_DIR}/lib
         -DMAGLAC_INCLUDE_DIRS=${EXTPROJECTS_BUILD_DIR}/include
         -DLEMON_INCLUDE_DIRS=${CMAKE_PREFIX_PATH}/include
         -DLEMON_LIBS_DIRS=${CMAKE_PREFIX_PATH}/lib
         -DBOOST_INCLUDE_DIRS=${BOOST_INCLUDE_DIRS}
         -DBOOST_LIBS_DIR=${BOOST_LIBS_DIR})
+
+add_dependencies(graph-flow dipacus geoc gcurve magLac btools)

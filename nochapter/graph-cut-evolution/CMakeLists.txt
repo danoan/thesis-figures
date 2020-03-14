@@ -4,7 +4,7 @@ project(nochapter-graph-cut-evolution)
 add_executable(nochapter-graph-cut-evolution nochapter-graph-cut-evolution.cpp)
 
 if(${USE_REMOTE_REPOSITORIES})
-    add_dependencies(nochapter-graph-cut-evolution dipacus)
+    add_dependencies(nochapter-graph-cut-evolution dipacus scabolic)
 endif()
 
 target_include_directories(nochapter-graph-cut-evolution PRIVATE
