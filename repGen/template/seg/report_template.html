@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shape flow experiment report</title>
+
+    <link rel="stylesheet" type="text/css" href="report.css"></link>
+    <script type="text/javascript" src="report.js"></script>
+
+</head>
+<body>
+
+<div class="row">
+    {% for param in paramCollection %}
+        {% if param.render  %}
+            <div class="collumn" menu>
+                <ul>
+                    <li class="header">{{ param.name }}</li>
+                    {% for item in param.items %}
+                        <li class="button" onclick="select(this)" path="{{ item['path'] }}" type="{{ param.type }}">{{ item['value'] }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+
+<div class="display">
+    <div class="display-1 full active">
+
+        <div class="flipseg">
+            <img src="invalid.png" img_seq="0" onclick="open_src(this)" onerror="this.src='invalid.png'" /><br>
+            FlipFlow Segmentation
+        </div>
+
+        <div class="balanceseg">
+            <img src="invalid.png" onclick="open_src(this)" onerror="this.src='invalid.png'" /><br>
+            BalanceFlow Segmentation
+        </div>
+
+        <div class="graphseg">
+            <img src="invalid.png" onclick="open_src(this)" onerror="this.src='invalid.png'" /><br>
+            GraphFlow Segmentation
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
