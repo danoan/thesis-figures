@@ -35,7 +35,7 @@ shapes="bean square flower triangle ellipse"
 
 for s in $shapes
 do
-    PREFIX_INPUT="$DATA_FOLDER/$s/radius_$RADIUS/$ESTIMATOR/$ENERGY/len_pen_$LENGTH_PEN/jonctions_1/best/gs_"
+    PREFIX_INPUT="$DATA_FOLDER/$s/radius_$RADIUS/$ESTIMATOR/$ENERGY/len_pen_$LENGTH_PEN/jonctions_1/curve_segs_4/best/gs_"
     OUTPUT_FILEFOLDER="$OUTPUT_FOLDER/$ESTIMATOR/radius_$RADIUS/length_pen_$LENGTH_PEN"
 
     mkdir -p $OUTPUT_FILEFOLDER

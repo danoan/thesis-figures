@@ -9,6 +9,6 @@ FIGURES_PROJECTS="cellular-grid fixed-orientations fixed-pixels flow gcurves mdc
 
 for fp in $FIGURES_PROJECTS
 do
-    mkdir -p ${LATEX_THESIS_FIGURES_FOLDER}/$fp
-    cp -r ${SCRIPT_PATH}/$fp/output/$fp ${LATEX_THESIS_FIGURES_FOLDER}
+    mkdir -p ${LATEX_THESIS_FIGURES_FOLDER}/chapter5/$fp
+    cp -r ${SCRIPT_PATH}/$fp/output/$fp ${LATEX_THESIS_FIGURES_FOLDER}/chapter5
 done

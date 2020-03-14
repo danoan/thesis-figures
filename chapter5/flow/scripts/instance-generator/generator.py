@@ -21,7 +21,7 @@ def resolve_output_folder(c):
 def exhaustive_gc_flow(c):
 
     outputFolder = resolve_output_folder(c)
-    shape,radius,estimator,energy,length_pen,jonctions,strategy,gs = c
+    shape,radius,estimator,energy,length_pen,jonctions,ncs,strategy,gs = c
 
     s=" ".join( ["%s%s" % ("-S",shape['value']),
                  "%s%d" % ("-r",radius['value']),
@@ -31,13 +31,14 @@ def exhaustive_gc_flow(c):
                  "%s%f" % ("-j",jonctions['value']),
                  "%s%s" % ("-s",strategy['value']),
                  "%s%s" % ("-t",estimator['value']),
+                 "%s%s" % ("-V",ncs['value']),
                  "%s%f" % ("-h", gs['value']),
                  "%s%d" % ("-n", NUM_THREADS)
                  ])
 
     print("\n*****Running: ", s,"\n")
 
-    binary = "%s/%s" % (BINARY_FOLDER,"flow/app-exhaustive-gc-flow")
+    binary = "%s/%s" % (BINARY_FOLDER,"app-exhaustive-gc-flow")
     subprocess.call( [binary,
                       "%s%s" % ("-S",shape['value']),
                       "%s%d" % ("-r",radius['value']),
@@ -47,6 +48,7 @@ def exhaustive_gc_flow(c):
                       "%s%f" % ("-j",jonctions['value']),
                       "%s%s" % ("-s",strategy['value']),
                       "%s%s" % ("-t",estimator['value']),
+                      "%s%s" % ("-V",ncs['value']),
                       "%s%f" % ("-h", gs['value']),
                       "%s%d" % ("-n", NUM_THREADS),
                       outputFolder
@@ -56,7 +58,7 @@ def summary_flow(c):
     binary = SUMMARY_FLOW_APP
     flow_images_folder_path=resolve_output_folder(c)
 
-    shape,radius,estimator,energy,length_pen,jonctions,strategy,gs = c
+    shape,radius,estimator,energy,length_pen,jonctions,ncs,strategy,gs = c
 
     opt_radius = 1.0/(length_pen['value']**0.5)
 
@@ -83,7 +85,7 @@ def read_input():
 
     global BINARY_FOLDER, OUTPUT_FOLDER, SCRIPT_FOLDER, SUMMARY_FLOW_APP
     PROJECT_FOLDER=sys.argv[1]
-    BINARY_FOLDER="%s/%s/%s" % (PROJECT_FOLDER,sys.argv[2],"app")
+    BINARY_FOLDER="%s/%s/%s" % (PROJECT_FOLDER,sys.argv[2],"")
     SUMMARY_FLOW_APP=sys.argv[3]
     OUTPUT_FOLDER=sys.argv[4]
 

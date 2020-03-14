@@ -38,7 +38,7 @@ prefix_input()
     gs=$5
     energy=$6
 
-    echo $DATA_FOLDER/$shape/radius_$radius/$estimator/$energy/len_pen_$length_pen/jonctions_1/best/gs_$gs
+    echo $DATA_FOLDER/$shape/radius_$radius/$estimator/$energy/len_pen_$length_pen/jonctions_1/curve_segs_4/best/gs_$gs
 }
 
 

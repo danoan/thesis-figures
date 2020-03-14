@@ -44,6 +44,6 @@ ${SCRIPT_PATH}/scripts/ch5-plot-summary-ii5.sh $DATA_OUTPUT_FOLDER "${OUTPUT_FOL
 ${SCRIPT_PATH}/scripts/ch5-plot-summary-ii5.sh $DATA_OUTPUT_FOLDER "${OUTPUT_FOLDER}/plots/summary/lp_0.001" 0.00100
 
 
-#Convert summary eps files to pdf
+##Convert summary eps files to pdf
 find $OUTPUT_FOLDER -name "*.eps" | xargs -I{} epstopdf {}
 find $OUTPUT_FOLDER -name "*.eps" | xargs -I{} rm {}

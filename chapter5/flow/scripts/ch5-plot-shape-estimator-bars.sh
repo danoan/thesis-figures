@@ -17,6 +17,7 @@ gp_plot_config()
 	set key right top;
 	set boxwidth 1;
 	set style fill solid;
+	set logscale y 2;
 	set yrange[0:];
 	set xlabel 'Iterations';
 	set ylabel 'Elastica ({/Symbol a}=$lenpen, {/Symbol b}=1)';\
@@ -25,12 +26,12 @@ gp_plot_config()
 
 gp_add_plot()
 {
-    printf "'$1' every 1 u 1:2 w boxes ls $3 title '$2',"
+    printf "'$1' every 1 u 1:3 w boxes ls $3 title '$2',"
 }
 
 gp_last_plot()
 {
-	printf "'$1' every 1 u 1:2 w boxes ls $3 title '$2';"
+	printf "'$1' every 1 u 1:3 w boxes ls $3 title '$2';"
     v=$(python -c "import math; print(4*math.pi*(${LENGTH_PEN}**0.5))")
     printf "set arrow 10 from 0,$v to graph 1, first $v nohead lw 4 dt 2 front;"
 }
@@ -47,7 +48,7 @@ prefix_input()
     gs=$5
     energy=$6
 
-    echo $DATA_FOLDER/$shape/radius_$radius/$estimator/$energy/len_pen_$length_pen/jonctions_1/best/gs_$gs
+    echo $DATA_FOLDER/$shape/radius_$radius/$estimator/$energy/len_pen_$length_pen/jonctions_1/curve_segs_4/best/gs_$gs
 }
 
 
