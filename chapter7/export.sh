@@ -5,7 +5,7 @@ PROJECT_PATH=$( cd $SCRIPT_PATH && cd .. && pwd)
 
 LATEX_THESIS_FIGURES_FOLDER=$(realpath $1)
 
-FIGURES_PROJECTS="balance-flow segmentation"
+FIGURES_PROJECTS="balance-flow segmentation level-set"
 
 for fp in $FIGURES_PROJECTS
 do
