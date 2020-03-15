@@ -19,10 +19,10 @@ target_link_directories(nochapter-graph-cut-evolution PRIVATE
         ${BOOST_LIBS_DIR})
 
 target_link_libraries(nochapter-graph-cut-evolution
+        -lscabolic-core
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base
-        -lscabolic-core
         -lboost_filesystem
         -lboost_system
         ${DGTAL_LIBRARIES}

@@ -24,12 +24,12 @@ target_include_directories(ch6-complement-reasoning PRIVATE
         ${BOOST_INCLUDE_DIRS})
 
 target_link_libraries(ch6-complement-reasoning
-        -ldipacus-derivates
-        -ldipacus-components
-        -ldipacus-base
         -lscabolic-core
         -lscabolic-energy
         -lscabolic-optimization
+        -ldipacus-derivates
+        -ldipacus-components
+        -ldipacus-base
         -lboost_system
         -lboost_filesystem
         ${DGTAL_LIBRARIES}

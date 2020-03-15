@@ -9,7 +9,7 @@ BASE_OUTPUT_FOLDER=${SCRIPT_PATH}/output/segmentation
 DATA_GENERATOR=${SCRIPT_PATH}/instance-generator/generator.py
 DATA_FOLDER=${SCRIPT_PATH}/instance-generator/data
 
-#python3 ${DATA_GENERATOR}
+python3 ${DATA_GENERATOR}
 
 get_path()
 {
@@ -100,7 +100,7 @@ exp_radius()
     lb="1.0"
     lr="1.0"
     it=200
-    RADIUS="3 12 25"
+    RADIUS="3 7 12"
 
     FLIP_APP=${PROJECT_PATH}/ext-projects/cmake-build-release/jmiv/bin/boundary-correction-app
     BALANCE_APP=${PROJECT_PATH}/ext-projects/cmake-build-release/bin/boundary-correction-app
@@ -114,7 +114,6 @@ exp_radius()
     BALANCE_OUT="${BASE_OUTPUT_FOLDER}/exp-radius/balanceseg"
     GRAPH_OUT="${BASE_OUTPUT_FOLDER}/exp-radius/graphseg"
 
-
     for radius in $RADIUS
     do
         REL_PATH="alpha-${alpha}/beta-${beta}/gamma-${lr}/radius-${radius}"
@@ -125,30 +124,21 @@ exp_radius()
 
         $( $BALANCE_APP -r${radius} -i${it} -l-2 -q${beta} -t${lr} -g${alpha} -mimprove -O1 -d0 -o "${BALANCE_DATA}/${REL_PATH}" ${INPUT_FOLDER}/coala.xml && \
         mkdir -p ${BALANCE_OUT}/${REL_PATH} && \
-        cp ${BALANCE_DATA}/${REL_PATH}/corrected-seg.png ${BALANCE_OUT}/${REL_PATH}/corrected-seg.png)&
+        cp ${BALANCE_DATA}/${REL_PATH}/corrected-seg.png ${BALANCE_OUT}/${REL_PATH}/corrected-seg.png)
 
 
         $( $GRAPH_APP -r${radius} -i${it} -eelastica -h0.25 -d0 -a${alpha} -g${lr} -b${lb} -k${beta} ${INPUT_FOLDER}/coala.xml "${GRAPH_DATA}/${REL_PATH}" && \
         mkdir -p ${GRAPH_OUT}/${REL_PATH} && \
-        cp ${GRAPH_DATA}/${REL_PATH}/corrected-seg.png ${GRAPH_OUT}/${REL_PATH}/corrected-seg.png)
-
-
-#        mkdir -p ${FLIP_OUT}/${REL_PATH}
-#        cp ${FLIP_DATA}/${REL_PATH}/corrected-seg.png ${FLIP_OUT}/${REL_PATH}/corrected-seg.png
-#
-#        mkdir -p ${BALANCE_OUT}/${REL_PATH}
-#        cp ${BALANCE_DATA}/${REL_PATH}/corrected-seg.png ${BALANCE_OUT}/${REL_PATH}/corrected-seg.png
-#
-#        mkdir -p ${GRAPH_OUT}/${REL_PATH}
-#        cp ${GRAPH_DATA}/${REL_PATH}/corrected-seg.png ${GRAPH_OUT}/${REL_PATH}/corrected-seg.png
+        cp ${GRAPH_DATA}/${REL_PATH}/corrected-seg.png ${GRAPH_OUT}/${REL_PATH}/corrected-seg.png)&
 
     done
 
 }
 
-#exp_alpha
-#exp_beta
-#exp_gamma
+
+exp_alpha
+exp_beta
+exp_gamma
 
 exp_radius
 

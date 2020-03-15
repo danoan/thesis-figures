@@ -18,10 +18,10 @@ target_include_directories(ch7-outer-ball-elastica-estimation PRIVATE
         ${DGTAL_INCLUDE_DIRS})
 
 target_link_libraries(ch7-outer-ball-elastica-estimation
+        -lscabolic-core
         -ldipacus-base
         -ldipacus-components
         -ldipacus-derivates
-        -lscabolic-core
         -lboost_filesystem
         -lboost_system
         ${DGTAL_LIBRARIES})

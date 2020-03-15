@@ -1,5 +1,5 @@
 #include <boost/filesystem.hpp>
-
+#include <opencv/core.hpp>
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/io/boards/Board2D.h>
 #include <DIPaCUS/base/Shapes.h>
@@ -11,7 +11,6 @@ using namespace DGtal::Z2i;
 void drawDomain(DGtal::Board2D& board,const Domain& domain,double h)
 {
     board << domain;
-
 }
 
 int main(int argc, char* argv[])
@@ -26,7 +25,7 @@ int main(int argc, char* argv[])
     boost::filesystem::create_directories(p.remove_filename());
     DGtal::Board2D board;
 
-    Domain domain( 1.2*Point(-radius/h,-radius/h), 1.2*Point(radius/h,radius/h) );
+    Domain domain( 1.2*RealPoint(-radius/h,-radius/h), 1.2*RealPoint(radius/h,radius/h) );
     drawDomain(board,domain,h);
 
     DigitalSet digBall = DIPaCUS::Shapes::ball(h,cx,cy,radius);
