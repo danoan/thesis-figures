@@ -28,7 +28,7 @@ def resolve_path_folder(c):
 
 
 def graphseg(c):
-    model,dalpha,neigh,alpha,beta,lb,lr,input_name = c
+    model,h,dalpha,neigh,alpha,beta,lb,lr,input_name = c
 
     dataFolder = "{}/{}".format(BASE_DATA_FOLDER,resolve_path_folder(c))
     os.makedirs(dataFolder,exist_ok=True)
@@ -38,7 +38,7 @@ def graphseg(c):
     plist= ["-i{}".format(200),
             "-r{}".format(7),
             "-e{}".format("elastica"),
-            "-h{}".format(0.25),
+            "-h{}".format(h["value"]),
             "-a{}".format(alpha["value"]),
             "-k{}".format(beta["value"]),
             "-b{}".format(lb["value"]),
@@ -56,7 +56,7 @@ def graphseg(c):
     subprocess.call( [binary] + plist )
 
 def flipseg(c):
-    model,dalpha,neigh,alpha,beta,lb,lr,input_name = c
+    model,h,dalpha,neigh,alpha,beta,lb,lr,input_name = c
 
     dataFolder = "{}/{}".format(BASE_DATA_FOLDER,resolve_path_folder(c))
     os.makedirs(dataFolder,exist_ok=True)
@@ -79,7 +79,7 @@ def flipseg(c):
 
 
 def balanceseg(c):
-    model,dalpha,neigh,alpha,beta,lb,lr,input_name = c
+    model,h,dalpha,neigh,alpha,beta,lb,lr,input_name = c
 
     dataFolder = "{}/{}".format(BASE_DATA_FOLDER,resolve_path_folder(c))
     os.makedirs(dataFolder,exist_ok=True)
@@ -116,7 +116,7 @@ def total_combinations():
     return total
 
 def trigger(c):
-    model,dalpha,neigh,alpha,beta,lb,lr,input_name = c
+    model,h,dalpha,neigh,alpha,beta,lb,lr,input_name = c
 
     if model["value"]=="balanceseg":
         model_fn = balanceseg
@@ -142,7 +142,7 @@ def main():
 
 
 if __name__=='__main__':
-    # T=threading.Thread(None,main)
-    # T.start()
-    # T.join()
+    T=threading.Thread(None,main)
+    T.start()
+    T.join()
     render_template("seg",CONFIG_LIST,BASE_DATA_FOLDER)

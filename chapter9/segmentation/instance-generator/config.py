@@ -8,6 +8,7 @@ class Param:
 
 
 MODEL=["balanceseg","flipseg","graphseg"]
+H=[1.0]
 ALPHA=[0,0.1,0.5,1.0,3.0]
 DALPHA=[True,False]
 BETA=[0,0.1,1.0,3.0]
@@ -28,7 +29,7 @@ def resolve_std(prefix,s):
     return "%s%s" % (prefix,s)
 
 def valid_combination(c):
-    model,dalpha,neigh,alpha,beta,lb,lr,input_name = c
+    model,h,dalpha,neigh,alpha,beta,lb,lr,input_name = c
 
     flag=True
     if dalpha["value"]==True:
@@ -44,6 +45,7 @@ def valid_combination(c):
     return flag
 
 CONFIG_LIST=[ Param("Model","","model",MODEL,resolve_std,False),
+              Param("H","","h",H,resolve_double,True),
               Param("DAlpha","dalpha-","dalpha",DALPHA,resolve_std),
               Param("Neighborhood","neigh-","neigh",NEIGH,resolve_int),
               Param("Alpha","alpha-","alpha",ALPHA,resolve_double),
