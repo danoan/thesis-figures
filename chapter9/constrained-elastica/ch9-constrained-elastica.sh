@@ -16,6 +16,7 @@ SUMMARY_FLOW=${PROJECT_PATH}/ext-projects/cmake-build-release/bin/summary-flow
 
 
 INPUT_NAME="curve-2 curve-3 flower-1 flower-2"
+#INPUT_NAME="flower-2"
 
 localsearch()
 {
@@ -25,8 +26,8 @@ localsearch()
     radius=$4
 
         INPUT_FOLDER=${BASE_INPUT_FOLDER}/${inputName}
-        DATA_FOLDER=${BASE_DATA_FOLDER}/localsearch/${inputName}/len_pen-${alpha}/radius-${radius}/nc-${nc}
-        OUTPUT_FOLDER=${BASE_OUTPUT_FOLDER}/localsearch/${inputName}/len_pen-${alpha}/radius-${radius}/nc-${nc}
+        DATA_FOLDER=${BASE_DATA_FOLDER}/localsearch/${inputName}/len_pen-${alpha}/radius-${radius}/nc-${nc}/h1.0
+        OUTPUT_FOLDER=${BASE_OUTPUT_FOLDER}/localsearch/${inputName}/len_pen-${alpha}/radius-${radius}/nc-${nc}/h1.0
 
         mkdir -p $DATA_FOLDER
         mkdir -p $OUTPUT_FOLDER
@@ -37,7 +38,7 @@ localsearch()
             masks="-d${DATA_FOLDER}/pixelMask.pgm"
         fi
 
-        $LOCAL_SEARCH -S${INPUT_FOLDER}/input.pgm -j1 -i400 -eelastica -a${alpha} -sbest -h0.25 -tii -r${radius} -n32 -F${INPUT_FOLDER}/pixelMask.pgm $DATA_FOLDER
+        $LOCAL_SEARCH -S${INPUT_FOLDER}/input.pgm -j1 -i400 -eelastica -a${alpha} -sbest -h1.0 -tii -r${radius} -n32 -F${INPUT_FOLDER}/pixelMask.pgm $DATA_FOLDER
         $SUMMARY_FLOW -j10 ${masks} ${DATA_FOLDER} ${OUTPUT_FOLDER}/summary.eps
 
         epstopdf ${OUTPUT_FOLDER}/summary.eps
@@ -56,11 +57,11 @@ graphflow()
 
 
     INPUT_FOLDER=${BASE_INPUT_FOLDER}/${inputName}
-    DATA_FOLDER=${BASE_DATA_FOLDER}/graphflow/${inputName}/len_pen-${alpha}/radius-${radius}/N-${N}
-    OUTPUT_FOLDER=${BASE_OUTPUT_FOLDER}/graphflow/${inputName}/len_pen-${alpha}/radius-${radius}/N-${N}
+    DATA_FOLDER=${BASE_DATA_FOLDER}/graphflow/${inputName}/len_pen-${alpha}/radius-${radius}/N-${N}/h1.0
+    OUTPUT_FOLDER=${BASE_OUTPUT_FOLDER}/graphflow/${inputName}/len_pen-${alpha}/radius-${radius}/N-${N}/h1.0
 
-    mkdir -p $DATA_FOLDER
-    mkdir -p $OUTPUT_FOLDER
+    rm -rf $DATA_FOLDER && mkdir -p $DATA_FOLDER
+    rm -rf $OUTPUT_FOLDER && mkdir -p $OUTPUT_FOLDER
 
     masks="-p${DATA_FOLDER}/pixelMask.pgm -d${INPUT_FOLDER}/dirMask.pgm"
     if [ "$inputName" = "flower-1" -o "$inputName" = "flower-2" ]
@@ -68,8 +69,8 @@ graphflow()
         masks="-d${DATA_FOLDER}/pixelMask.pgm"
     fi
 
-    $GRAPH_FLOW -S${INPUT_FOLDER}/input.pgm -i-1 -eelastica -a${alpha} -h0.25 -r${radius} -O3 -n6 -N${N} -P${INPUT_FOLDER}/pixelMask.pgm $DATA_FOLDER
-    $SUMMARY_FLOW -j20 ${masks} ${DATA_FOLDER} ${OUTPUT_FOLDER}/summary.eps
+    $GRAPH_FLOW -S${INPUT_FOLDER}/input.pgm -i400 -eelastica -a${alpha} -h1.0 -r${radius} -O2 -n6 -N${N} -P${INPUT_FOLDER}/pixelMask.pgm $DATA_FOLDER
+    $SUMMARY_FLOW -j10 ${masks} ${DATA_FOLDER} ${OUTPUT_FOLDER}/summary.eps
 
     epstopdf ${OUTPUT_FOLDER}/summary.eps
     rm ${OUTPUT_FOLDER}/summary.eps
@@ -78,10 +79,10 @@ graphflow()
 
 }
 
-N="1 3"
-NC="4 12"
-ALPHA="0.01 0.001"
-RADIUS="7 12"
+N="1"
+NC="4"
+ALPHA="0.002 0.0002"
+RADIUS="7 15 50"
 
 for inputName in $INPUT_NAME
 do
@@ -89,11 +90,11 @@ do
     do
         for radius in $RADIUS
         do
-#            for n in $N
-#            do
-#
-#                graphflow $inputName $n $alpha $radius
-#            done
+            for n in $N
+            do
+
+                graphflow $inputName $n $alpha $radius
+            done
 
             for nc in $NC
             do

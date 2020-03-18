@@ -9,15 +9,16 @@ import threading,time
 
 
 SCRIPT_FOLDER = os.path.dirname( os.path.realpath(__file__) )
+EXP_FOLDER = os.path.dirname(SCRIPT_FOLDER)
 PROJECT_FOLDER = SCRIPT_FOLDER
 for i in range(3):
     PROJECT_FOLDER = os.path.dirname(PROJECT_FOLDER)
 
 BINARY_FOLDER="{}/{}".format(PROJECT_FOLDER,"ext-projects/cmake-build-release/bin")
 JMIV_BINARY_FOLDER="{}/{}".format(PROJECT_FOLDER,"ext-projects/cmake-build-release/jmiv/bin")
-INPUT_FOLDER="{}/{}".format(SCRIPT_FOLDER,"input")
+INPUT_FOLDER="{}/{}".format(EXP_FOLDER,"input")
 
-BASE_DATA_FOLDER="{}/{}".format(SCRIPT_FOLDER,"data")
+BASE_DATA_FOLDER="{}/{}".format(EXP_FOLDER,"data")
 
 def resolve_path_folder(c):
     path_folder=""

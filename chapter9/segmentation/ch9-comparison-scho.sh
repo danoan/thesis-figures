@@ -3,7 +3,7 @@
 SCRIPT_FOLDER=$( cd $(dirname ${BASH_SOURCE[0]}) >/dev/null 2>&1 && pwd)
 PROJECT_PATH=$( cd $SCRIPT_FOLDER && cd ../.. && pwd )
 
-DATA_FOLDER=${SCRIPT_FOLDER}/instance-generator/input
+DATA_FOLDER=${SCRIPT_FOLDER}/input
 EXT_FOLDER=${SCRIPT_FOLDER}/ext
 OUTPUT_FOLDER=${SCRIPT_FOLDER}/output/segmentation/comparison
 
@@ -113,13 +113,15 @@ produce_data()
 
 produce_output()
 {
+    lambda=2.0
+    gamma=1.0
     for imgName in $(ls ${SCHO_SEEDS_FOLDER})
     do
         echo "Schoenemann segmentation of image ${imgName}"
-        CUR_OUTPUT_FOLDER=${OUTPUT_FOLDER}/schoenemann/${imgName}
+        CUR_OUTPUT_FOLDER=${OUTPUT_FOLDER}/schoenemann/lambda-${lambda}/gamma-${gamma}/${imgName}
         mkdir -p ${CUR_OUTPUT_FOLDER}
 
-        $SCHOENEMANN_APP -i "${PPM_IMAGES_FOLDER}/${imgName}.ppm" -lambda 0.1 -gamma 1.0 -curv-power 2 \
+        $SCHOENEMANN_APP -i "${PPM_IMAGES_FOLDER}/${imgName}.ppm" -lambda ${lambda} -gamma ${gamma} -curv-power 2 \
 		-fg-mask "${SCHO_SEEDS_FOLDER}/$imgName/mask-fg-0.pgm" \
 		-bg-mask "${SCHO_SEEDS_FOLDER}/$imgName/mask-bg-0.pgm" \
 	    -o "${CUR_OUTPUT_FOLDER}/${imgName}.pgm" \

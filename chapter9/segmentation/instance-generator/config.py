@@ -7,14 +7,15 @@ class Param:
         self.render=render
 
 
-MODEL=["balanceseg","flipseg","graphseg"]
+MODEL=["flipseg","balanceseg","graphseg"]
 H=[1.0]
-ALPHA=[0,0.1,0.5,1.0,3.0]
-DALPHA=[True,False]
-BETA=[0,0.1,1.0,3.0]
-LB=[0.0,0.5,1.0,2.0,5.0]
-LR=[0.0,0.5,1.0,2.0,5.0]
-NEIGH=[0,1,2]
+ALPHA=[0,0.5,3.0]
+DALPHA=[False]
+BETA=[0,0.1,1.0,2.0]
+LB=[0.0,1.0,2.0,5.0]
+LR=[0.0,1.0,2.0,5.0]
+NEIGH=[0,2]
+
 
 
 INPUT_NAME=["coala"]
@@ -45,7 +46,7 @@ def valid_combination(c):
     return flag
 
 CONFIG_LIST=[ Param("Model","","model",MODEL,resolve_std,False),
-              Param("H","","h",H,resolve_double,True),
+              Param("H","h-","h",H,resolve_double,True),
               Param("DAlpha","dalpha-","dalpha",DALPHA,resolve_std),
               Param("Neighborhood","neigh-","neigh",NEIGH,resolve_int),
               Param("Alpha","alpha-","alpha",ALPHA,resolve_double),
