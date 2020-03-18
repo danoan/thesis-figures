@@ -12,10 +12,14 @@ INPUT_NAME="airplane birds brown-snake camel coala eagle green-snake kite-surf l
 
 exp_comparison()
 {
-    alpha="0.01"
-    beta="1.0"
-    lb="3.0"
-    lr="3.0"
+    g_alpha="0.0002"
+    g_beta="1.0"
+    g_gamma="1.0"
+
+    f_alpha="0.5"
+    f_beta="1.0"
+    f_gamma="1.0"
+
     it=200
     radius="7"
 
@@ -33,21 +37,22 @@ exp_comparison()
 
     for input in $INPUT_NAME
     do
-        REL_PATH="${input}/alpha-${alpha}/beta-${beta}/gamma-${lr}/radius-${radius}"
+        F_REL_PATH="${input}/alpha-${f_alpha}/beta-${f_beta}/gamma-${f_gamma}/radius-${radius}"
+	G_REL_PATH="${input}/alpha-${g_alpha}/beta-${g_beta}/gamma-${g_gamma}/radius-${radius}"
 
-        $( $FLIP_APP -r${radius} -i${it} -l-2 -q${beta} -t${lr} -g${alpha} -mimprove -d0 -o "${FLIP_DATA}/${REL_PATH}" ${INPUT_FOLDER}/${input}.xml && \
-        mkdir -p ${FLIP_OUT}/${REL_PATH} && \
-        cp ${FLIP_DATA}/${REL_PATH}/corrected-seg.png ${FLIP_OUT}/${REL_PATH}/corrected-seg.png && \
-        cp ${FLIP_DATA}/${REL_PATH}/gc-seg.png ${FLIP_OUT}/${REL_PATH}/gc-seg.png)&
+        $( $FLIP_APP -r${radius} -i${it} -l-2 -q${f_beta} -t${f_gamma} -g${f_alpha} -mimprove -d0 -o "${FLIP_DATA}/${F_REL_PATH}" ${INPUT_FOLDER}/${input}.xml && \
+        mkdir -p ${FLIP_OUT}/${F_REL_PATH} && \
+        cp ${FLIP_DATA}/${F_REL_PATH}/corrected-seg.png ${FLIP_OUT}/${F_REL_PATH}/corrected-seg.png && \
+        cp ${FLIP_DATA}/${F_REL_PATH}/gc-seg.png ${FLIP_OUT}/${F_REL_PATH}/gc-seg.png)&
 
-        $( $BALANCE_APP -r${radius} -i${it} -l-2 -q${beta} -t${lr} -g${alpha} -mimprove -O1 -d0 -o "${BALANCE_DATA}/${REL_PATH}" ${INPUT_FOLDER}/${input}.xml && \
-        mkdir -p ${BALANCE_OUT}/${REL_PATH} && \
-        cp ${BALANCE_DATA}/${REL_PATH}/corrected-seg.png ${BALANCE_OUT}/${REL_PATH}/corrected-seg.png)
+        $( $BALANCE_APP -r${radius} -i${it} -l-2 -q${f_beta} -t${f_gamma} -g${f_alpha} -mimprove -O1 -d0 -o "${BALANCE_DATA}/${F_REL_PATH}" ${INPUT_FOLDER}/${input}.xml && \
+        mkdir -p ${BALANCE_OUT}/${F_REL_PATH} && \
+        cp ${BALANCE_DATA}/${F_REL_PATH}/corrected-seg.png ${BALANCE_OUT}/${F_REL_PATH}/corrected-seg.png)
 
 
-        $( $GRAPH_APP -r${radius} -i${it} -eelastica -h0.25 -d0 -a${alpha} -g${lr} -b${lb} -k${beta} ${INPUT_FOLDER}/${input}.xml "${GRAPH_DATA}/${REL_PATH}" && \
-        mkdir -p ${GRAPH_OUT}/${REL_PATH} && \
-        cp ${GRAPH_DATA}/${REL_PATH}/corrected-seg.png ${GRAPH_OUT}/${REL_PATH}/corrected-seg.png)&
+        $( $GRAPH_APP -r${radius} -i${it} -eelastica -h1.0 -d0 -a${g_alpha} -g${g_gamma} -b${g_gamma} -k${g_beta} ${INPUT_FOLDER}/${input}.xml "${GRAPH_DATA}/${G_REL_PATH}" && \
+        mkdir -p ${GRAPH_OUT}/${G_REL_PATH} && \
+        cp ${GRAPH_DATA}/${G_REL_PATH}/corrected-seg.png ${GRAPH_OUT}/${G_REL_PATH}/corrected-seg.png)&
 
 
     done
