@@ -1,5 +1,5 @@
 #include <boost/filesystem.hpp>
-#include <opencv/core.hpp>
+#include <opencv2/core.hpp>
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/io/boards/Board2D.h>
 #include <DIPaCUS/base/Shapes.h>
