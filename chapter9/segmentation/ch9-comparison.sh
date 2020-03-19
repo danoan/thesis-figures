@@ -3,9 +3,9 @@
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 PROJECT_PATH=$( cd $SCRIPT_PATH && cd ../../ && pwd )
 
-INPUT_FOLDER=${SCRIPT_PATH}/instance-generator/input
+INPUT_FOLDER=${SCRIPT_PATH}/input
 
-BASE_DATA_FOLDER=${SCRIPT_PATH}/instance-generator/data/comparison
+BASE_DATA_FOLDER=${SCRIPT_PATH}/data/comparison
 BASE_OUTPUT_FOLDER=${SCRIPT_PATH}/output/segmentation/comparison
 
 INPUT_NAME="airplane birds brown-snake camel coala eagle green-snake kite-surf long-snake man-hat mans-music mushroom peacock statues tiger"
