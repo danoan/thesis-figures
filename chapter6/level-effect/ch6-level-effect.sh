@@ -38,11 +38,13 @@ experiment_sequence()
 
     shape_flow $shape 0 $method 3 1 2 3 &
     shape_flow $shape 0 $method 5 1 3 4 5 &
-    shape_flow $shape 0 $method 9 1 3 5 7 8 9 &
+    shape_flow $shape 0 $method 9 1 3 5 6 7 8 9 &
+
 
     shape_flow $shape 0.5 $method 3 1 2 3 &
     shape_flow $shape 0.5 $method 5 1 3 4 5 &
-    shape_flow $shape 0.5 $method 9 1 3 5 7 8 9
+    shape_flow $shape 0.5 $method 9 1 3 5 5 7 8 9
+
 
 }
 
