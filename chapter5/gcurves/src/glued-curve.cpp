@@ -15,13 +15,13 @@ namespace Fig2
             DigitalSet ds = DIPaCUS::Shapes::square();
             EnergyInput::LinelSet ls;
             EnergyInput energyInput(EnergyType::Elastica,EnergyInput::MDCA,1.0,5,0.001,ls);
-            SearchParameters sp(SearchParameters::Strategy::Best, 1, 11, 12,false,1,0,0,energyInput,2,0);
+            SearchParameters sp(SearchParameters::Strategy::Best, 1, 8, 12,false,1,0,0,energyInput,2,0);
 
             const DGtal::Z2i::Domain& domain = ds.domain();
             KSpace kspace;
             kspace.init(domain.lowerBound(),domain.upperBound(),true);
 
-            GCurve::Range gcRange(ds,11);
+            GCurve::Range gcRange(ds,9);
             GenerateSeedPairs::SeedPairsList spl;
             GenerateSeedPairs(spl,gcRange);
 
@@ -74,7 +74,7 @@ namespace Fig2
                 auto outC = mainOuterSeed.inCirculatorBegin;
 
                 GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,mainC,mainC);
-                GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,innC,innC);
+//                GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,innC,innC);
                 GCurve::Utils::drawCurve(board,DGtal::Color::Silver,DGtal::Color::Silver,outC,outC);
 
 
@@ -93,9 +93,49 @@ namespace Fig2
                                          seedCombination[0].data().first.inCirculatorEnd,
                                          seedCombination[0].data().second.outCirculatorBegin+1);
 
-                board << DGtal::CustomStyle(curve.begin()->className() + "/Paving", new DGtal::CustomColors(DGtal::Color::Blue, DGtal::Color::Blue));
+                for(auto it=seedCombination[0].data().first.inCirculatorBegin;
+                    it!=seedCombination[0].data().first.inCirculatorEnd;++it)
+                {
+                    SCell p;
+                    if( seedCombination[0].data().first.type==GCurve::Seed::MainOuter )
+                    {
+                        p = kspace.sDirectIncident(*it,*kspace.sOrthDirs(*it));
+                        board << DGtal::CustomStyle(curve.begin()->className() + "/Paving", new DGtal::CustomColors(DGtal::Color::None, DGtal::Color::Yellow));
+                        board << p;
+                    }else
+                    {
+                        p = kspace.sIndirectIncident(*it,*kspace.sOrthDirs(*it));
+                        board << DGtal::CustomStyle(curve.begin()->className() + "/Paving", new DGtal::CustomColors(DGtal::Color::None, DGtal::Color::Red));
+                        board << p;
+                    }
+
+
+                }
+
+                for(auto it=seedCombination[0].data().first.inCirculatorEnd;
+                    it!=seedCombination[0].data().second.outCirculatorBegin+1;++it)
+                {
+                    SCell p;
+                    if( seedCombination[0].data().first.type==GCurve::Seed::MainOuter )
+                    {
+                        p = kspace.sDirectIncident(*it,*kspace.sOrthDirs(*it));
+                        board << DGtal::CustomStyle(curve.begin()->className() + "/Paving", new DGtal::CustomColors(DGtal::Color::None, DGtal::Color::Yellow));
+                        board << p;
+                    }else
+                    {
+                        p = kspace.sIndirectIncident(*it,*kspace.sOrthDirs(*it));
+                        board << DGtal::CustomStyle(curve.begin()->className() + "/Paving", new DGtal::CustomColors(DGtal::Color::None, DGtal::Color::Red));
+                        board << p;
+                    }
+
+                }
+
+
+                board << DGtal::CustomStyle(curve.begin()->className() + "/Paving", new DGtal::CustomColors(DGtal::Color::Green, DGtal::Color::Green));
                 board << seedCombination[0].data().first.linkLinels[0]
                       << seedCombination[0].data().second.linkLinels[0];
+
+                GCurve::Utils::drawCurve(board,DGtal::Color::Black,DGtal::Color::Black,innC,innC);
 
                 std::string currOutputPath = outputFolder + "/" + std::to_string(i++) + ".eps";
                 board.saveEPS(currOutputPath.c_str());

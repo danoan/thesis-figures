@@ -5,7 +5,7 @@ PROJECT_PATH=$( cd $SCRIPT_PATH && cd .. && pwd)
 
 LATEX_THESIS_FIGURES_FOLDER=$(realpath $1)
 
-FIGURES_PROJECTS="cellular-grid fixed-orientations fixed-pixels flow gcurves mdca-larger-neighborhood mdca-sensitivity"
+FIGURES_PROJECTS="cellular-grid fixed-orientations fixed-pixels flow gcurves mdca-larger-neighborhood mdca-sensitivity m-ring"
 
 for fp in $FIGURES_PROJECTS
 do

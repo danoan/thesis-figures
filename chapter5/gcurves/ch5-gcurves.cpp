@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     boost::filesystem::create_directories(gcOutputFolder);
 
     GluedCurve::gluedCurve(gcOutputFolder);
-    DistanceTransform::distanceTransform(3,0.25,outputFolder);
+    //DistanceTransform::distanceTransform(3,0.25,outputFolder);
 
     return 0;
 }
