@@ -82,11 +82,12 @@ build_plot()
             ii_5_estimation ${model} ${shape} 0.25 ${LENGTH_PEN} > $( unique_name $model $LENGTH_PEN $RADIUS )
         done
 
-        create_multiplot "$OUTPUT_FOLDER/${shape}.eps" "${shape^}-eRadius=${RADIUS}" \
-        $( unique_name "localsearch" $LENGTH_PEN $RADIUS ) "localsearch" \
+        create_multiplot "$OUTPUT_FOLDER/${shape}.eps" "${shape^}-bRadius=${RADIUS}" \
         $( unique_name "flipflow" $LENGTH_PEN $RADIUS ) "flipflow" \
         $( unique_name "balanceflow" $LENGTH_PEN $RADIUS ) "balanceflow" \
         $( unique_name "graphflow" $LENGTH_PEN $RADIUS ) "graphflow"
+
+#        $( unique_name "localsearch" $LENGTH_PEN $RADIUS ) "localsearch"
 
         epstopdf "$OUTPUT_FOLDER/${shape}.eps"
         rm "$OUTPUT_FOLDER/${shape}.eps"
