@@ -25,7 +25,6 @@ target_link_directories(ch5-gcurves PRIVATE
 
 target_link_libraries(ch5-gcurves
         -lbtools-core
-        -lbtools-reader
         -lbtools-utils
         -lscabolic-optimization
         -lscabolic-energy
