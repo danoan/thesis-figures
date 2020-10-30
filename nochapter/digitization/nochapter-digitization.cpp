@@ -4,7 +4,6 @@
 #include <DGtal/io/boards/Board2D.h>
 #include <DIPaCUS/base/Shapes.h>
 
-
 using namespace DGtal::Z2i;
 
 
@@ -44,6 +43,12 @@ int main(int argc, char* argv[])
 
     board.drawCircle(cx/h,cy/h,radius/h);
     board.saveSVG(outputFilepath.c_str());
+    
+    double PI=3.14159265;
+    
+    std::cout << "Number of pixels: " << digBall.size() << "\n"
+        << "Area estimation: " << ( (double) digBall.size() )*pow(h,2) << "\n" 
+        << "Real area: " << PI*pow(radius,2) << std::endl;
 
 
     return 0;
