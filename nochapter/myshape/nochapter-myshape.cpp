@@ -76,6 +76,23 @@ void createMyShape(const std::string& outputFilepath,double h)
     board.saveSVG(outputFilepath.c_str());
 }
 
+void createMyShapeAndDisk(const std::string& outputFilepath,double h, double r)
+{
+    MyShape myShape(1,0,0,3);
+    DigitalSet digMyShape = DIPaCUS::Shapes::digitizeShape(myShape,h);
+    DigitalSet disk = DIPaCUS::Shapes::ball(h,0,0,r);
+    
+    DGtal::Board2D board;
+
+    board << digMyShape.domain();
+    board << digMyShape;
+    
+    setStyle(board,disk,128);
+    board << disk;
+    
+    board.saveSVG(outputFilepath.c_str());
+}
+
 void createLine(const std::string& outputFilepath)
 {
     DGtal::Board2D board;
@@ -96,8 +113,13 @@ int main(int argc, char* argv[])
 {
     double h=std::atof(argv[1]);
     std::string outputFolder = argv[2];
+    double radius = 3;
+    if(argc>3){
+        radius = std::atof(argv[3]);
+    }
     boost::filesystem::create_directories(outputFolder);
 
+    createMyShapeAndDisk(outputFolder+"/myShapeAndDisk.svg",h,radius);
     createMyShape(outputFolder+"/myShape.svg",h);
     createLine(outputFolder+"/line.svg");
     createDisk(outputFolder+"/circle.svg");
