@@ -11,7 +11,7 @@ APP_SUMMARY_FLOW=${PROJECT_PATH}/ext-projects/cmake-build-release/bin/summary-fl
 DATA_OUTPUT_FOLDER=${SCRIPT_PATH}/data
 mkdir -p ${DATA_OUTPUT_FOLDER}
 
-OUTPUT_FOLDER=${SCRIPT_PATH}/output/no-neighborhood-flow
+OUTPUT_FOLDER=${SCRIPT_PATH}/output/no-neighborhood-flow-always-evolve
 mkdir -p ${OUTPUT_FOLDER}
 
 flow()
@@ -19,6 +19,7 @@ flow()
     ALPHA=$1
     ropt=$( python3 -c "print('{}'.format(1.0/pow($ALPHA,0.5)))" )
 
+# For bean I should change the code to avoid premature stop in case difference between iterations is small (graph-flow.hpp)
     SHAPES="triangle square flower bean"
     for SHAPE in ${SHAPES}
     do
@@ -35,4 +36,4 @@ flow()
 }
 
 flow "0.0020661157"
-#flow "0.015625"
+flow "0.015625"

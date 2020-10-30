@@ -14,17 +14,26 @@ mkdir -p ${DATA_OUTPUT_FOLDER}
 OUTPUT_FOLDER=${SCRIPT_PATH}/output/no-neighborhood-flow-always-improve
 mkdir -p ${OUTPUT_FOLDER}
 
-#Optimum radius = 22
-ALPHA="0.0020661157"
-ropt=$( python3 -c "print('{}'.format(1.0/pow($ALPHA,0.5)))" )
 
-SHAPES="triangle square flower bean"
-for SHAPE in ${SHAPES}
-do
-    $APP_GRAPH_FLOW -S${SHAPE} -h0.125 -b1 -a${ALPHA} -r16 -v5 -O2 -N0 -n4 -i-1 -B30 -s ${DATA_OUTPUT_FOLDER}/${SHAPE}
-    $APP_SUMMARY_FLOW ${DATA_OUTPUT_FOLDER}/${SHAPE} ${DATA_OUTPUT_FOLDER}/${SHAPE}/summary.eps -j10 -e.png -r${ropt} -h0.125
+flow()
+{
+    ALPHA=$1
+    ropt=$( python3 -c "print('{}'.format(1.0/pow($ALPHA,0.5)))" )
 
-    cp ${DATA_OUTPUT_FOLDER}/${SHAPE}/summary.eps ${OUTPUT_FOLDER}/${SHAPE}.eps
-    convert_to_png ${OUTPUT_FOLDER}/${SHAPE}.eps ${OUTPUT_FOLDER}/${SHAPE}.png
-    rm ${OUTPUT_FOLDER}/${SHAPE}.eps
-done
+    SHAPES="triangle square flower bean"
+    for SHAPE in ${SHAPES}
+    do
+        FLOW_OUTPUT_FOLDER="${DATA_OUTPUT_FOLDER}/${SHAPE}/${ALPHA}"
+        $APP_GRAPH_FLOW -S${SHAPE} -h0.125 -b1 -a${ALPHA} -r16 -v5 -O2 -N0 -n4 -i-1 -B30 -s ${FLOW_OUTPUT_FOLDER}
+        $APP_SUMMARY_FLOW ${FLOW_OUTPUT_FOLDER} ${FLOW_OUTPUT_FOLDER}/summary.eps -j10 -r${ropt} -h0.125 -e.png
+
+        RESULTS_OUTPUT_FOLDER="${OUTPUT_FOLDER}/${ALPHA}"
+        mkdir -p ${RESULTS_OUTPUT_FOLDER}
+        cp ${FLOW_OUTPUT_FOLDER}/summary.eps ${RESULTS_OUTPUT_FOLDER}/${SHAPE}.eps
+        convert_to_png ${RESULTS_OUTPUT_FOLDER}/${SHAPE}.eps ${RESULTS_OUTPUT_FOLDER}/${SHAPE}.png
+        rm ${RESULTS_OUTPUT_FOLDER}/${SHAPE}.eps
+    done
+}
+
+flow "0.0020661157"
+flow "0.015625"

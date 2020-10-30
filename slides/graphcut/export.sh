@@ -5,7 +5,7 @@ PROJECT_PATH=$( cd $SCRIPT_PATH && cd ../.. && pwd)
 
 LATEX_THESIS_FIGURES_FOLDER=$(realpath $1)
 
-FIGURES_PROJECTS="no-neighborhood-flow no-neighborhood-flow-always-improve with-neighborhood-flow with-neighborhood-flow-always-improve"
+FIGURES_PROJECTS="no-neighborhood-flow-always-evolve no-neighborhood-flow-always-improve with-neighborhood-flow with-neighborhood-flow-always-improve"
 
 for fp in $FIGURES_PROJECTS
 do
